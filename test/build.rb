@@ -1,8 +1,7 @@
 
 add_executable("unit-tests-test-runner") do
 	configure do
-		ldflags {["-L", File.join(install_prefix, "lib"), "-lUnitTest"]}
-		buildflags {["-I", File.join(install_prefix, "include")]}
+		linkflags ["-lUnitTest"]
 	end
 	
 	def sources
