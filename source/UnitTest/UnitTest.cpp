@@ -78,7 +78,7 @@ namespace UnitTest {
 		} while (next != std::string::npos);
 	}
 	
-	void run(const std::string & command) {
+	static void run(const std::string & command) {
 		pid_t child = fork();
 
 		if (child) {
