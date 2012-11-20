@@ -14,11 +14,11 @@ define_package "unit-test-0.1.0" do |package|
 		top.add_directory('source')
 		top.add_directory('test')
 		
-		local_build = Environment.new(environment) do
-			build_prefix "build-#{platform.name}-#{config.variant}"
+		local_build = environment.merge do
+			build_prefix "build-#{platform.name}-#{variant}"
 			install_prefix platform.prefix
 		end
 		
-		top.execute(build, local_build)
+		top.execute(:install, local_build)
 	end
 end
