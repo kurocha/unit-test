@@ -19,55 +19,51 @@
 namespace UnitTest {
 	/// Keep track of statistics.
 	class Statistics {
-		int _failed;
-		int _passed;
+		std::size_t _failed;
+		std::size_t _passed;
 
 	public:
 		Statistics ();
+
+		std::size_t passed() const { return _passed; }
+		std::size_t failed() const { return _failed; }
+
 		void fail_test ();
 		void pass_test ();
-		void print_summary (std::string name, std::ostream & out) const;
 
-		bool failed() const { return _failed > 0; }
+		void print_summary (std::string name, std::ostream & out) const;
 
 		void operator+= (const Statistics & other);
 	};
 
-	/// Logs errors that occur when performing unit tests, if they fail.
-	class ErrorLogger {
-		bool _error;
-
-	public:
-		ErrorLogger (bool error);
-		~ErrorLogger ();
-
-		template <typename AnyT>
-		ErrorLogger& operator<< (const AnyT & fragment)
-		{
-			if (_error)
-				std::cerr << fragment;
-
-			return *this;
-		}
-	};
-	
 	/// A examiner runs the tests and keeps track of the results.
 	class Examiner {
 		Statistics * _statistics;
-		
+
+		std::stringstream _buffer;
+		std::ostream & _output;
+
 	public:
-		Examiner(Statistics * statistics);
+		Examiner(Statistics * statistics, std::ostream & output = std::cerr);
 		
-		ErrorLogger check(bool condition);
+		void check(bool condition);
 		
 		template <typename LeftT, typename RightT>
 		void check_equal(LeftT left, RightT right) {
-			check(left == right) << left << " == " << right;
+			(*this) << left << " == " << right << std::endl;
+			
+			check(left == right);
+		}
+
+		template <typename ValueT>
+		std::ostream & operator<< (ValueT && value)
+		{
+			return (_buffer << value);
 		}
 	};
-	
+
 	// The test function type:
-	typedef std::function<void (Examiner *)> TestFunctionT;
+	typedef std::function<void (Examiner &)> TestFunctionT;
 
 	/// A test that must be completed successfully.
 	class Test {
@@ -79,7 +75,7 @@ namespace UnitTest {
 		
 		std::string name() const { return _name; }
 		
-		void invoke(Examiner * examiner);
+		void invoke(Examiner & examiner);
 	};
 	
 	std::ostream & operator<< (std::ostream & out, const std::type_info & rhs);

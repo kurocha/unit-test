@@ -20,7 +20,7 @@ namespace UnitTest {
 		std::string failure_command;
 	}
 	
-	Statistics::Statistics () : _failed (0), _passed (0)
+	Statistics::Statistics () : _failed(0), _passed(0)
 	{
 	}
 
@@ -49,17 +49,7 @@ namespace UnitTest {
 		out << " out of " << _failed + _passed << " total" << std::endl;
 	}
 	
-	ErrorLogger::ErrorLogger (bool error) : _error(error)
-	{
-	}
-
-	ErrorLogger::~ErrorLogger ()
-	{
-		if (_error)
-			std::cerr << std::endl;
-	}
-	
-	Examiner::Examiner(Statistics * statistics) : _statistics(statistics) {
+	Examiner::Examiner(Statistics * statistics, std::ostream & output) : _statistics(statistics), _output(output) {
 		
 	}
 	
@@ -99,7 +89,7 @@ namespace UnitTest {
 		}
 	}
 	
-	ErrorLogger Examiner::check(bool condition) {
+	void Examiner::check(bool condition) {
 		if (condition == false) {
 			_statistics->fail_test();
 
@@ -107,18 +97,20 @@ namespace UnitTest {
 				run(Options::failure_command);
 			}
 
-			std::cerr << "Test Failed: ";
-			return ErrorLogger(true);
+			_output << "Test Failed!" << std::endl;
+			_output << _buffer.rdbuf();
 		} else {
 			_statistics->pass_test();
-			return ErrorLogger(false);
 		}
+
+		// Clear the buffer:
+		_buffer.str("");
 	}
 
 	Test::Test(std::string name, TestFunctionT function) : _name(name), _function(function) {
 	}
 
-	void Test::invoke(Examiner * examiner) {
+	void Test::invoke(Examiner & examiner) {
 		_function(examiner);
 	}
 	
@@ -142,7 +134,7 @@ namespace UnitTest {
 			Statistics results;
 			Examiner examiner(&results);
 			
-			test->invoke(&examiner);
+			test->invoke(examiner);
 			
 			results.print_summary(test->name(), out);
 			
