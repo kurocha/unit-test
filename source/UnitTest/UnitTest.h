@@ -1,9 +1,9 @@
 //
-//  Core/CodeTest.h
-//  This file is part of the "Dream" project, and is released under the MIT license.
+//  UnitTest/UnitTest.h
+//  This file is part of the "UnitTest" project, and is released under the MIT license.
 //
 //  Created by Samuel Williams on 14/09/06.
-//  Copyright 2006 Samuel WilliamsWilliams. All rights reserved.
+//  Copyright 2006 Samuel Williams. All rights reserved.
 //
 //
 

@@ -1,9 +1,9 @@
 //
-//  UnitTests.cpp
-//  This file is released under the MIT license.
+//  UnitTest/UnitTest.cpp
+//  This file is part of the "UnitTest" project, and is released under the MIT license.
 //
 //  Created by Samuel Williams on 25/09/06.
-//  Copyright (c) 2006 Samuel Williams. All rights reserved.
+//  Copyright 2006 Samuel Williams. All rights reserved.
 //
 
 #include "UnitTest.h"
