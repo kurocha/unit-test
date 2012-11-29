@@ -5,6 +5,6 @@ add_executable("unit-tests-test-runner") do
 	end
 	
 	def sources(environment)
-		Pathname.glob(root + "**/*.cpp")
+		FileList[root, "**/*.cpp"]
 	end
 end
