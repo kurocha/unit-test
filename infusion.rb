@@ -3,10 +3,10 @@
 #  This file is part of the "Teapot" project, and is released under the MIT license.
 #
 
-required_version "0.2"
+required_version "0.4"
 require 'teapot/build'
 
-define_package "unit-test-0.1.0" do |package|
+define_package "unit-test-0.2.0" do |package|
 	package.build(:all) do |platform, environment|
 		top = Teapot::Build.top(Pathname.new(__FILE__).dirname)
 

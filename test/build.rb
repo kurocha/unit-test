@@ -4,7 +4,7 @@ add_executable("unit-tests-test-runner") do
 		linkflags ["-lUnitTest"]
 	end
 	
-	def sources
+	def sources(environment)
 		Pathname.glob(root + "**/*.cpp")
 	end
 end
