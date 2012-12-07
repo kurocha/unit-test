@@ -5,7 +5,7 @@
 
 required_version "0.5"
 
-define_package "unit-test" do |package|
+define_target "unit-test" do |target|
 	package.install do |environment|
 		top = Teapot::Build.top(package.path)
 
@@ -15,10 +15,10 @@ define_package "unit-test" do |package|
 		top.execute(:install, environment)
 	end
 	
-	package.depends :system
-	package.depends "Language/C++11"
+	target.depends :system
+	target.depends "Language/C++11"
 	
-	package.provides "Library/unit-test" do
+	target.provides "Library/unit-test" do
 		append linkflags "-lUnitTest"
 	end
 end
