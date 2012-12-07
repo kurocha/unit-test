@@ -18,7 +18,7 @@ define_target "unit-test" do |target|
 	target.depends :platform
 	target.depends "Language/C++11"
 	
-	target.provides "Library/unit-test" do
+	target.provides "Library/UnitTest" do
 		append linkflags "-lUnitTest"
 	end
 end
