@@ -6,7 +6,7 @@
 required_version "0.5"
 
 define_target "unit-test" do |target|
-	package.install do |environment|
+	target.install do |environment|
 		top = Teapot::Build.top(package.path)
 
 		top.add_directory('source')
@@ -15,7 +15,7 @@ define_target "unit-test" do |target|
 		top.execute(:install, environment)
 	end
 	
-	target.depends :system
+	target.depends :platform
 	target.depends "Language/C++11"
 	
 	target.provides "Library/unit-test" do
