@@ -1,10 +1,10 @@
 
-add_executable("unit-tests-test-runner") do
+compile_executable("unit-tests-test-runner") do
 	configure do
 		linkflags ["-lUnitTest"]
 	end
 	
-	def sources(environment)
+	def source_files(environment)
 		FileList[root, "**/*.cpp"]
 	end
 end
