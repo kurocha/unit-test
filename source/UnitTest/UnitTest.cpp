@@ -198,9 +198,9 @@ int main (int argc, char** argv)
 		
 		if (arg == "--on-failure" && (i+1) < argc) {
 			// Get the absolute path to the failure command:
-			char resolved_name[PATH_MAX];
-			realpath(argv[i+1], resolved_name);
+			char * resolved_name = realpath(argv[i+1], NULL);
 			UnitTest::Options::failure_command = std::string(resolved_name);
+			free(resolved_name);
 		}
 		
 		if (arg == "--copy") {
