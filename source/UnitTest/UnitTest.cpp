@@ -10,6 +10,7 @@
 #include <iostream>
 
 #include <unistd.h>
+#include <stdlib.h>
 #include <signal.h>
 #include <sys/wait.h>
 
@@ -178,18 +179,35 @@ namespace UnitTest {
 	}
 }
 
+static void change_directory(std::string file_path)
+{
+	auto last_slash = file_path.find_last_of('/');
+	
+	if (last_slash == std::string::npos)
+		return;
+	
+	file_path.resize(last_slash);
+	
+	chdir(file_path.c_str());
+}
+
 int main (int argc, char** argv)
 {
 	for (int i = 0; i < argc; i += 1) {
 		auto arg = std::string(argv[i]);
 		
 		if (arg == "--on-failure" && (i+1) < argc) {
-			UnitTest::Options::failure_command = std::string(argv[i+1]);
+			// Get the absolute path to the failure command:
+			char resolved_name[PATH_MAX];
+			realpath(argv[i+1], resolved_name);
+			UnitTest::Options::failure_command = std::string(resolved_name);
 		}
 		
 		if (arg == "--copy") {
 			std::cerr << "Unit Test Runner v" << UnitTest::VERSION << ". Copyright, 2012, by Samuel G. D. Williams." << std::endl;
 			std::cerr << "This software is released under the MIT license and comes with ABSOLUTELY NO WARRANTY." << std::endl;
+			
+			return 0;
 		}
 		
 		if (arg == "--help") {
@@ -198,8 +216,13 @@ int main (int argc, char** argv)
 			std::cerr << std::endl;
 			std::cerr << "	--on-failure [script-path]" << std::endl;
 			std::cerr << "		Execute the given script when a unit test fails via fork-exec." << std::endl;
+			
+			return 0;
 		}
 	}
+	
+	// Change the working directory so that unit tests can expect some consistency if/when loading external resources:
+	change_directory(argv[0]);
 	
 	if (UnitTest::Options::failure_command.size() > 0) {
 		signal(SIGSEGV, UnitTest::segmentation_fault);
