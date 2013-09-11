@@ -39,7 +39,7 @@ end
 define_configuration "travis" do |configuration|
 	configuration[:source] = "https://github.com/dream-framework"
 	
-	configuration.import! "platforms"
+	configuration.require "platforms"
 	
 	configuration[:run] = ["Test/UnitTest"]
 end
