@@ -12,4 +12,4 @@ install:
     - sudo apt-get -qq install libstdc++-4.8-dev clang-3.2
 # ruby 2.0 and teapot
     - rvm use 2.0 --install --binary --fuzzy
-    - gem install teapot
+    - bundle install
