@@ -46,6 +46,7 @@ namespace UnitTest {
 	public:
 		Examiner(Statistics * statistics, std::ostream & output = std::cerr);
 		
+		// Check if the condition is true, otherwise the test fails.
 		void check(bool condition);
 		
 		template <typename LeftT, typename RightT>

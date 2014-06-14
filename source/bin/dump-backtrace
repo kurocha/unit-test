@@ -15,5 +15,6 @@ script.close
 
 pid = Process.ppid
 
+# Run the debugger:
 command = ["gdb", "-p", Process.ppid.to_s, "-silent", "-batch", "-x", script.path]
 system(*command)

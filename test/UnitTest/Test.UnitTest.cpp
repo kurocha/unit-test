@@ -13,7 +13,14 @@ namespace UnitTest
 				statistics.pass_test();
 				statistics.fail_test();
 				
+				examiner.check_equal(statistics.passed(), 1);
 				examiner.check_equal(statistics.failed(), 1);
+				
+				// Append statistics, in this case we just double everything:
+				statistics += statistics;
+				
+				examiner.check_equal(statistics.passed(), 2);
+				examiner.check_equal(statistics.failed(), 2);
 			}
 		},
 	};
