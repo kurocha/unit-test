@@ -65,8 +65,6 @@ define_configuration "travis" do |configuration|
 	configuration.require "platforms"
 	
 	configuration.require "build-files"
-	configuration.require "build-darwin"
-	configuration.require "build-clang"
 	
 	configuration[:run] = ["Test/UnitTest"]
 end
