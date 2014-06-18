@@ -9,11 +9,10 @@ define_target "unit-test" do |target|
 	target.build do
 		source_root = target.package.path + 'source'
 		
-		copy source: Files::Glob.new(source_root, "bin/**/*"), prefix: environment[:install_prefix]
-		copy headers: Files::Glob.new(source_root, 'UnitTest/**/*.{h,hpp}'), prefix: environment[:install_prefix]
+		copy binaries: Files::Glob.new(source_root, "bin/**/*")
+		copy headers: Files::Glob.new(source_root, 'UnitTest/**/*.{h,hpp}')
 		
-		build static_library: "UnitTest", 
-			prefix: environment[:install_prefix], 
+		build static_library: "UnitTest",
 			source_files: Files::Glob.new(source_root, 'UnitTest/**/*.cpp')
 	end
 	
@@ -28,7 +27,7 @@ define_target "unit-test" do |target|
 	end
 	
 	target.provides "Rulebook/UnitTests" do
-		rule "run.unit-tests" do
+		define Rule, "run.unit-tests" do
 			input :test_runner
 			
 			apply do |arguments|
@@ -43,11 +42,9 @@ define_target "unit-test-tests" do |target|
 		source_root = target.package.path + 'test'
 		
 		build executable: "UnitTest-tests", 
-			prefix: environment[:install_prefix],
 			source_files: Files::Glob.new(source_root, 'UnitTest/**/*.cpp')
 		
-		run executable: "UnitTest-tests",
-			prefix: environment[:install_prefix]
+		run executable: "UnitTest-tests"
 	end
 	
 	target.depends "Build/Clang"
