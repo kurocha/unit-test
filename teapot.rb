@@ -24,14 +24,22 @@ define_target "unit-test" do |target|
 	
 	target.provides "Library/UnitTest" do
 		append linkflags "-lUnitTest"
-	end
-	
-	target.provides "Rulebook/UnitTests" do
+		
 		define Rule, "run.unit-tests" do
-			input :test_runner
+			input :source_files
 			
-			apply do |arguments|
-				run!(arguments[:test_runner])
+			parameter :tests
+			
+			parameter :executable_file, implicit: true do |arguments|
+				environment[:install_prefix] + "test" + "#{arguments[:tests]}-tests"
+			end
+			
+			apply do |parameters|
+				build executable: parameters[:tests],
+					executable_file: parameters[:executable_file],
+					source_files: parameters[:source_files]
+				
+				run executable: parameters[:tests], executable_file: parameters[:executable_file]
 			end
 		end
 	end
@@ -60,7 +68,6 @@ define_configuration "travis" do |configuration|
 	configuration[:source] = "https://github.com/dream-framework"
 	
 	configuration.require "platforms"
-	
 	configuration.require "build-files"
 	
 	configuration[:run] = ["Test/UnitTest"]
