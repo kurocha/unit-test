@@ -1,5 +1,5 @@
 //
-//  UnitTest/UnitTest.h
+//  UnitTest/UnitTest.hpp
 //  This file is part of the "UnitTest" project, and is released under the MIT license.
 //
 //  Created by Samuel Williams on 14/09/06.
@@ -15,6 +15,8 @@
 #include <string>
 #include <sstream>
 #include <functional>
+
+#include "Expectation.hpp"
 
 namespace UnitTest {
 	/// Keep track of statistics.
@@ -45,6 +47,11 @@ namespace UnitTest {
 
 	public:
 		Examiner(Statistics * statistics, std::ostream & output = std::cerr);
+		
+		template <typename ValueT>
+		Expectation<Examiner, ValueT> expect(const ValueT & value) {
+			return {*this, value};
+		}
 		
 		// Check if the condition is true, otherwise the test fails.
 		void check(bool condition);

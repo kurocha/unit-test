@@ -5,6 +5,13 @@
 
 required_version "1.0"
 
+define_project "Unit Test" do |project|
+	project.add_author "Samuel Williams"
+	project.license = "MIT License"
+
+	project.version = "0.1.0"
+end
+
 define_target "unit-test" do |target|
 	target.build do
 		source_root = target.package.path + 'source'
@@ -49,7 +56,7 @@ define_target "unit-test-tests" do |target|
 	target.build do
 		source_root = target.package.path + 'test'
 		
-		build executable: "UnitTest-tests", 
+		build executable: "UnitTest-tests",
 			source_files: Files::Glob.new(source_root, 'UnitTest/**/*.cpp')
 		
 		run executable: "UnitTest-tests"
@@ -64,6 +71,16 @@ define_target "unit-test-tests" do |target|
 	target.provides "Test/UnitTest"
 end
 
+define_configuration "local" do |configuration|
+	configuration[:source] = "https://github.com/dream-framework"
+	
+	configuration.require "platforms"
+	configuration.require "build-files"
+	configuration.require "project", import: false
+	
+	configuration[:run] = ["Test/UnitTest"]
+end
+
 define_configuration "travis" do |configuration|
 	configuration[:source] = "https://github.com/dream-framework"
 	
@@ -72,12 +89,3 @@ define_configuration "travis" do |configuration|
 	
 	configuration[:run] = ["Test/UnitTest"]
 end
-
-define_configuration "local" do |configuration|
-	configuration[:source] = "../"
-	
-	configuration.require "platforms"
-	
-	configuration[:run] = ["Test/UnitTest"]
-end
-

@@ -6,7 +6,7 @@
 //  Copyright 2006 Samuel Williams. All rights reserved.
 //
 
-#include "UnitTest.h"
+#include "UnitTest.hpp"
 #include <iostream>
 
 #include <unistd.h>
