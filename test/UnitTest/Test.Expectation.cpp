@@ -10,7 +10,6 @@ namespace UnitTest
 		{"it should report expectations",
 			[](UnitTest::Examiner & examiner) {
 				examiner.expect(10) == 10;
-				examiner.expect(10) == 20;
 			}
 		},
 		
