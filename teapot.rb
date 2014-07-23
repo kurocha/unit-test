@@ -46,7 +46,8 @@ define_target "unit-test" do |target|
 					executable_file: parameters[:executable_file],
 					source_files: parameters[:source_files]
 				
-				run executable: parameters[:tests], executable_file: parameters[:executable_file]
+				run executable: parameters[:tests],
+					executable_file: parameters[:executable_file]
 			end
 		end
 	end
@@ -54,12 +55,9 @@ end
 
 define_target "unit-test-tests" do |target|
 	target.build do
-		source_root = target.package.path + 'test'
+		test_root = target.package.path + 'test'
 		
-		build executable: "UnitTest-tests",
-			source_files: Files::Glob.new(source_root, 'UnitTest/**/*.cpp')
-		
-		run executable: "UnitTest-tests"
+		run tests: 'UnitTest', source_files: test_root.glob("**/*.cpp")
 	end
 	
 	target.depends "Build/Clang"
