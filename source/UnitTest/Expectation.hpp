@@ -42,6 +42,8 @@ namespace UnitTest
 		UNITTEST_OPERATOR(>=)
 		UNITTEST_OPERATOR(>)
 		
+#undef UNITTEST_OPERATOR
+		
 	private:
 		ExaminerT & _examiner;
 		const ValueT & _value;
