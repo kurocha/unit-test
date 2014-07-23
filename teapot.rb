@@ -57,7 +57,7 @@ define_target "unit-test-tests" do |target|
 	target.build do
 		test_root = target.package.path + 'test'
 		
-		run tests: 'UnitTest', source_files: test_root.glob("**/*.cpp")
+		run tests: 'UnitTest', source_files: test_root.glob("UnitTest/**/*.cpp")
 	end
 	
 	target.depends "Build/Clang"
