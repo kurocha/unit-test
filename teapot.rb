@@ -55,9 +55,7 @@ end
 
 define_target "unit-test-tests" do |target|
 	target.build do
-		test_root = target.package.path + 'test'
-		
-		run tests: 'UnitTest', source_files: test_root.glob("UnitTest/**/*.cpp")
+		run tests: 'UnitTest', source_files: target.package.path.glob("test/UnitTest/**/*.cpp")
 	end
 	
 	target.depends "Build/Clang"
@@ -130,7 +128,6 @@ define_configuration "local" do |configuration|
 	
 	configuration.require "platforms"
 	configuration.require "build-files"
-	configuration.require "project", import: false
 	
 	configuration[:run] = ["Test/UnitTest"]
 end
