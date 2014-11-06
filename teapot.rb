@@ -69,6 +69,62 @@ define_target "unit-test-tests" do |target|
 	target.provides "Test/UnitTest"
 end
 
+define_generator "Unit/Test" do |generator|
+	generator.description = <<-EOF
+		Generates a basic test file in the project.
+		
+		usage: teapot generate Unit/Test Namespace::TestName
+	EOF
+	
+	def scope_for_namespace(namespace)
+		open = namespace.collect{|name| "namespace #{name}\n{\n"}
+		close = namespace.collect{ "}\n" }
+	
+		return open + close
+	end
+	
+	generator.generate do |full_class_name|
+		*path, class_name = full_class_name.split(/::/)
+		
+		if path == []
+			raise GeneratorError.new("You must specify a class name with a namespace!")
+		end
+		
+		directory = Files::Path.new('test') + path.join('/')
+		directory.mkpath
+		
+		name = Name.new(class_name)
+		substitutions = Substitutions.new
+		
+		# e.g. Foo Bar, typically used as a title, directory, etc.
+		substitutions['TEST_NAME'] = name.identifier
+		substitutions['TEST_FILE_NAME'] = name.identifier
+		
+		substitutions['TEST_SUITE_NAME'] = name.identifier + "TestSuite"
+		substitutions['TEST_SUITE_DESCRIPTION'] = full_class_name
+		
+		# e.g. foo-bar, typically used for targets, executables.
+		substitutions['NAMESPACE'] = scope_for_namespace(path)
+		
+		# The user's current name:
+		substitutions['AUTHOR_NAME'] = context.metadata.user.name
+		
+		if context.project
+			substitutions['PROJECT_NAME'] = context.project.name
+			substitutions['LICENSE'] = context.project.license
+		else
+			substitutions['PROJECT_NAME'] = "Unnamed"
+			substitutions['LICENSE'] = "Unspecified License"
+		end
+		
+		current_date = Time.new
+		substitutions['DATE'] = current_date.strftime("%-d/%-m/%Y")
+		substitutions['YEAR'] = current_date.strftime("%Y")
+		
+		generator.copy('templates/test', directory, substitutions)
+	end
+end
+
 define_configuration "local" do |configuration|
 	configuration[:source] = "https://github.com/dream-framework"
 	
