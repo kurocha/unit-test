@@ -30,7 +30,7 @@ define_target "unit-test" do |target|
 	target.depends "Language/C++11"
 	
 	target.provides "Library/UnitTest" do
-		append linkflags "-lUnitTest"
+		append linkflags {install_prefix + "lib/libUnitTest.a"}
 		
 		define Rule, "run.unit-tests" do
 			input :source_files
