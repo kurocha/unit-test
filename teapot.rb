@@ -91,7 +91,7 @@ define_generator "Unit/Test" do |generator|
 		directory = Files::Path.new('test') + path.join('/')
 		directory.mkpath
 		
-		name = Name.new(class_name)
+		name = Build::Name.new(class_name)
 		substitutions = Substitutions.new
 		
 		# e.g. Foo Bar, typically used as a title, directory, etc.
