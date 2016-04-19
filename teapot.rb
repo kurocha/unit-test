@@ -135,20 +135,9 @@ define_generator "Unit/Test" do |generator|
 	end
 end
 
-define_configuration "local" do |configuration|
-	configuration[:source] = "https://github.com/dream-framework"
+define_configuration "test" do |configuration|
+	configuration[:source] = "https://github.com/kurocha"
 	
 	configuration.require "platforms"
 	configuration.require "build-files"
-	
-	configuration[:run] = ["Test/UnitTest"]
-end
-
-define_configuration "travis" do |configuration|
-	configuration[:source] = "https://github.com/dream-framework"
-	
-	configuration.require "platforms"
-	configuration.require "build-files"
-	
-	configuration[:run] = ["Test/UnitTest"]
 end
