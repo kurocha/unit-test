@@ -32,6 +32,18 @@ define_target "unit-test" do |target|
 	target.provides "Library/UnitTest" do
 		append linkflags {install_prefix + "lib/libUnitTest.a"}
 		
+		define Rule, "copy.unit-tests" do
+			input :test_assets
+			
+			parameter :prefix, implicit: true do |arguments|
+				environment[:install_prefix] + "test"
+			end
+			
+			apply do |parameters|
+				copy source: parameters[:test_assets], prefix: parameters[:prefix]
+			end
+		end
+		
 		define Rule, "run.unit-tests" do
 			input :source_files
 			
