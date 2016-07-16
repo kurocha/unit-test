@@ -135,7 +135,12 @@ namespace UnitTest {
 			Statistics results;
 			Examiner examiner(&results);
 			
-			test->invoke(examiner);
+			try {
+				test->invoke(examiner);
+			} catch (std::exception & error) {
+				out << "Test failed with exception: " << error.what() << std::endl;
+				total.fail_test();
+			}
 			
 			results.print_summary(test->name(), out);
 			
