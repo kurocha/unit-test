@@ -44,6 +44,17 @@ namespace UnitTest
 		
 #undef UNITTEST_OPERATOR
 		
+		template <typename ExceptionT, typename... ArgumentsT>
+		void to_throw(ArgumentsT... arguments) {
+			try {
+				_examiner << "Expected " << typeid(_value).name() << " to throw " << typeid(ExceptionT).name() << std::endl;
+				_value(arguments...);
+				_examiner.check(false);
+			} catch (ExceptionT & exception) {
+				_examiner.check(true);
+			}
+		}
+		
 	private:
 		ExaminerT & _examiner;
 		const ValueT & _value;
