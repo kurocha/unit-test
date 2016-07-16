@@ -6,12 +6,10 @@
 //  Copyright, 2014, by Samuel Williams. All rights reserved.
 //
 
-#ifndef UNITTEST_EXPECTATION_H
-#define UNITTEST_EXPECTATION_H
-
-#pragma clang diagnostic ignored "-Wunused-comparison"
+#pragma once
 
 #include <iostream>
+#include <typeinfo>
 
 namespace UnitTest
 {
@@ -60,5 +58,3 @@ namespace UnitTest
 		const ValueT & _value;
 	};
 }
-
-#endif

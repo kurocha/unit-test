@@ -7,8 +7,7 @@
 //
 //
 
-#ifndef _UNIT_TEST_H
-#define _UNIT_TEST_H
+#pragma once
 
 #include <iostream>
 #include <vector>
@@ -123,5 +122,3 @@ namespace UnitTest {
 	/// The global registry object.
 	Registry * shared_registry();
 }
-
-#endif
