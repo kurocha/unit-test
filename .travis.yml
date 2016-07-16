@@ -2,7 +2,7 @@ language: cpp
 sudo: false
 script:
   - teapot -c test fetch
-  - teapot -c test build Test/TaggedFormat
+  - teapot -c test build Test/UnitTest
 compiler: clang
 addons:
   apt:
