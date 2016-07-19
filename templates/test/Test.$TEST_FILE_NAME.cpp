@@ -1,6 +1,6 @@
 //
-//  $TEST_FILE_NAME.cpp
-//  File file is part of the "$PROJECT_NAME" project and released under the $LICENSE.
+//  Test.$TEST_FILE_NAME.cpp
+//  This file is part of the "$PROJECT_NAME" project and released under the $LICENSE.
 //
 //  Created by $AUTHOR_NAME on $DATE.
 //  Copyright, $YEAR, by $AUTHOR_NAME. All rights reserved.
