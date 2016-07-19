@@ -14,6 +14,15 @@ Use Teapot to build and install Tagged Format:
 
 Currently, only Mac OS X and Linux are supported using standards conformant C++11 compilers.
 
+## Modernize Existing tests
+
+Here are some useful regexps to modernize existing unit tests:
+
+### Update Comments
+
+	examiner << (.*?)";
+	examiner << $1." << std::endl;
+
 ## Usage
 
 Typically, you'd create a directory called `test` and then, per component, create a file called `Test.Component.cpp`, e.g. `test/Test.UnitTest.cpp`. In this file, simply follow this template:
