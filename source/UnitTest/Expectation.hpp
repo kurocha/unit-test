@@ -8,6 +8,9 @@
 
 #pragma once
 
+// Expectation operators below have side effects. We disable superfluous warnings.
+#pragma clang diagnostic ignored "-Wunused-comparison"
+
 #include <iostream>
 #include <typeinfo>
 
