@@ -10,13 +10,13 @@
 
 namespace UnitTest
 {
-	/*
-	Expectation::Expectation()
+	std::ostream & operator<< (std::ostream & out, const std::type_info & rhs)
 	{
+		return out << "typeinfo(" << rhs.name() << ")";
 	}
 	
-	Expectation::~Expectation()
+	std::ostream & operator<< (std::ostream & out, const std::nullptr_t &)
 	{
+		return out << "nullptr";
 	}
-	*/
 }

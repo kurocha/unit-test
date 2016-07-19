@@ -85,8 +85,6 @@ namespace UnitTest {
 		void invoke(Examiner & examiner);
 	};
 	
-	std::ostream & operator<< (std::ostream & out, const std::type_info & rhs);
-	
 	class Suite {
 	public:
 		struct Entry {

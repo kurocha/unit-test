@@ -13,6 +13,9 @@
 
 namespace UnitTest
 {
+	std::ostream & operator<< (std::ostream & out, const std::type_info & rhs);
+	std::ostream & operator<< (std::ostream & out, const std::nullptr_t &);
+	
 	template <typename ExaminerT, typename ValueT>
 	class Expectation
 	{
