@@ -98,8 +98,7 @@ namespace UnitTest {
 				run(Options::failure_command);
 			}
 
-			_output << "*** Test Failed ***" << std::endl;
-			_output << _buffer.rdbuf();
+			_output << "Failed check: " << _buffer.rdbuf();
 		} else {
 			_statistics->pass_test();
 		}
