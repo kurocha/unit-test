@@ -100,7 +100,7 @@ namespace UnitTest {
 	
 	protected:
 		std::string _name;
-		std::vector<Test *> _tests;
+		std::vector<Test> _tests;
 
 	public:
 		Suite(std::initializer_list<Entry> entries);

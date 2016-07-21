@@ -117,7 +117,7 @@ namespace UnitTest {
 	Suite::Suite(std::initializer_list<Entry> entries) {
 		for (auto & entry : entries) {
 			if (entry.test)
-				_tests.push_back(new Test(entry.name, entry.test));
+				_tests.emplace(_tests.end(), entry.name, entry.test);
 			else
 				_name = entry.name;
 		}
@@ -135,13 +135,13 @@ namespace UnitTest {
 			Examiner examiner(&results);
 			
 			try {
-				test->invoke(examiner);
+				test.invoke(examiner);
 			} catch (std::exception & error) {
 				out << "Test failed with exception: " << error.what() << std::endl;
 				total.fail_test();
 			}
 			
-			results.print_summary(test->name(), out);
+			results.print_summary(test.name(), out);
 			
 			total += results;
 		}
@@ -168,12 +168,12 @@ namespace UnitTest {
 	}
 	
 	Registry * shared_registry() {
-		static Registry * registry = nullptr;
+		static Registry * _shared_registry = nullptr;
+
+		if (!_shared_registry)
+			_shared_registry = new Registry;
 		
-		if (registry == nullptr)
-			registry = new Registry;
-		
-		return registry;
+		return _shared_registry;
 	}
 	
 	static void segmentation_fault(int) {
