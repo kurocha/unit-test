@@ -15,8 +15,9 @@ end
 define_target "unit-test" do |target|
 	target.build do
 		source_root = target.package.path + 'source'
+		bin_root = target.package.path + 'bin'
 		
-		copy binaries: Files::Glob.new(source_root, "bin/**/*")
+		copy binaries: Files::Directory.new(bin_root)
 		copy headers: Files::Glob.new(source_root, 'UnitTest/**/*.{h,hpp}')
 		
 		build static_library: "UnitTest",

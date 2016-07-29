@@ -207,13 +207,6 @@ int main (int argc, char** argv)
 			free(resolved_name);
 		}
 		
-		if (arg == "--copy") {
-			std::cerr << "Unit Test Runner v" << UnitTest::VERSION << ". Copyright, 2012, by Samuel G. D. Williams." << std::endl;
-			std::cerr << "This software is released under the MIT license and comes with ABSOLUTELY NO WARRANTY." << std::endl;
-			
-			return 0;
-		}
-		
 		if (arg == "--help") {
 			std::cerr << "Usage: " << argv[0] << " [options]" << std::endl;
 			std::cerr << "This script can be used to run a set of compiled unit tests." << std::endl;
