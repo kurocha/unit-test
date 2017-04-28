@@ -3,7 +3,7 @@
 #  This file is part of the "Teapot" project, and is released under the MIT license.
 #
 
-required_version "1.0"
+required_version "1.3"
 
 define_project "Unit Test" do |project|
 	project.add_author "Samuel Williams"
@@ -28,7 +28,7 @@ define_target "unit-test" do |target|
 	target.depends "Build/Clang"
 	
 	target.depends :platform
-	target.depends "Language/C++11"
+	target.depends "Language/C++11", private: true
 	
 	target.provides "Library/UnitTest" do
 		append linkflags {install_prefix + "lib/libUnitTest.a"}
@@ -74,7 +74,7 @@ define_target "unit-test-tests" do |target|
 	target.depends "Build/Clang"
 	
 	target.depends :platform
-	target.depends "Language/C++11"
+	target.depends "Language/C++11", private: true
 	target.depends "Library/UnitTest"
 	
 	target.provides "Test/UnitTest"
