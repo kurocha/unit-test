@@ -137,8 +137,8 @@ namespace UnitTest {
 			try {
 				test.invoke(examiner);
 			} catch (std::exception & error) {
-				out << "Test failed with exception: " << error.what() << std::endl;
-				total.fail_test();
+				out << "Test failed with unhandled exception: " << error.what() << std::endl;
+				results.fail_test();
 			}
 			
 			results.print_summary(test.name(), out);
