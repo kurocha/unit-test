@@ -60,7 +60,8 @@ define_target "unit-test" do |target|
 					source_files: parameters[:source_files]
 				
 				run executable: parameters[:tests],
-					executable_file: parameters[:executable_file]
+					executable_file: parameters[:executable_file],
+					arguments: ARGV
 			end
 		end
 	end

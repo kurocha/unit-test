@@ -153,12 +153,14 @@ namespace UnitTest {
 		_suites.push_back(suite);
 	}
 	
-	Statistics Registry::perform_tests() {
+	Statistics Registry::perform_tests(Names filter) {
 		Statistics overall;
 		
 		for (auto suite : _suites) {
-			std::cerr << std::endl;
-			overall += suite->run(std::cerr);
+			if (filter.empty() || filter.find(suite->name()) != filter.end()) {
+				std::cerr << std::endl;
+				overall += suite->run(std::cerr);
+			}
 		}
 		
 		std::cerr << std::endl;
@@ -197,7 +199,9 @@ static void change_directory(std::string file_path)
 
 int main (int argc, char** argv)
 {
-	for (int i = 0; i < argc; i += 1) {
+	UnitTest::Names filter;
+	
+	for (int i = 1; i < argc; i += 1) {
 		auto arg = std::string(argv[i]);
 		
 		if (arg == "--on-failure" && (i+1) < argc) {
@@ -207,7 +211,7 @@ int main (int argc, char** argv)
 			free(resolved_name);
 		}
 		
-		if (arg == "--help") {
+		else if (arg == "--help") {
 			std::cerr << "Usage: " << argv[0] << " [options]" << std::endl;
 			std::cerr << "This script can be used to run a set of compiled unit tests." << std::endl;
 			std::cerr << std::endl;
@@ -215,6 +219,10 @@ int main (int argc, char** argv)
 			std::cerr << "		Execute the given script when a unit test fails via fork-exec." << std::endl;
 			
 			return 0;
+		}
+		
+		else {
+			filter.insert(arg);
 		}
 	}
 	
@@ -225,7 +233,7 @@ int main (int argc, char** argv)
 		signal(SIGSEGV, UnitTest::segmentation_fault);
 	}
 	
-	UnitTest::Statistics statistics = UnitTest::shared_registry()->perform_tests();
+	UnitTest::Statistics statistics = UnitTest::shared_registry()->perform_tests(filter);
 	
 	if (statistics.failed()) {
 		return 1;

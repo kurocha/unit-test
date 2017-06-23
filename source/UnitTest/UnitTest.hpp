@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <vector>
+#include <set>
 #include <string>
 #include <sstream>
 #include <functional>
@@ -85,6 +86,8 @@ namespace UnitTest {
 		void invoke(Examiner & examiner);
 	};
 	
+	typedef std::set<std::string> Names;
+	
 	class Suite {
 	public:
 		struct Entry {
@@ -104,8 +107,10 @@ namespace UnitTest {
 
 	public:
 		Suite(std::initializer_list<Entry> entries);
-
+		
 		Statistics run(std::ostream & out);
+		
+		const std::string & name() const {return _name;}
 	};
 	
 	/// A class that collects all defined unit tests.
@@ -114,7 +119,9 @@ namespace UnitTest {
 		
 	public:
 		void add(Suite * suite);
-		Statistics perform_tests();
+		
+		// If tests is not empty, it will be used to limit tests to 
+		Statistics perform_tests(Names names);
 	};
 	
 	/// The global registry object.
