@@ -8,6 +8,8 @@
 
 #include <UnitTest/UnitTest.hpp>
 
+#include <$TEST_SOURCE_HEADER>
+
 <NAMESPACE>
 UnitTest::Suite $TEST_SUITE_NAME {
 	"$TEST_SUITE_DESCRIPTION",
