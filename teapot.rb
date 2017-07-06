@@ -49,6 +49,7 @@ define_target "unit-test" do |target|
 			input :source_files
 			
 			parameter :tests
+			parameter :arguments
 			
 			parameter :executable_file, implicit: true do |arguments|
 				environment[:install_prefix] + "test" + "#{arguments[:tests]}-tests"
@@ -61,7 +62,7 @@ define_target "unit-test" do |target|
 				
 				run executable: parameters[:tests],
 					executable_file: parameters[:executable_file],
-					arguments: ARGV
+					arguments: parameters[:arguments]
 			end
 		end
 	end
@@ -86,10 +87,10 @@ define_target "unit-test-generator" do |target|
 		Generates a basic test file in the project.
 	EOF
 	
-	target.depends "Generate/Copy"
+	target.depends "Generate/Template"
 	target.provides "Generate/Unit/Test"
 	
-	def scope_for_namespace(namespace)
+	def target.scope_for_namespace(namespace)
 		open = namespace.collect{|name| "namespace #{name}\n{\n"}
 		close = namespace.collect{ "}\n" }
 	
@@ -119,7 +120,7 @@ define_target "unit-test-generator" do |target|
 		substitutions['TEST_SOURCE_HEADER'] = "#{full_class_name.gsub('::', '/')}.hpp"
 		
 		# e.g. foo-bar, typically used for targets, executables.
-		substitutions['NAMESPACE'] = scope_for_namespace(path)
+		substitutions['NAMESPACE'] = target.scope_for_namespace(path)
 		
 		source_path = Build::Files::Directory.new(target.package.path + "templates/test")
 		generate source: source_path, prefix: target.context.root, substitutions: substitutions
@@ -132,5 +133,5 @@ define_configuration "test" do |configuration|
 	configuration.require "platforms"
 	configuration.require "build-files"
 	
-	configuration.require "generators"
+	configuration.require "generate-template"
 end
