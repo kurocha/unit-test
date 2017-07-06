@@ -3,7 +3,7 @@
 #  This file is part of the "Teapot" project, and is released under the MIT license.
 #
 
-required_version "1.3"
+required_version "2.0"
 
 define_project "Unit Test" do |project|
 	project.add_author "Samuel Williams"
@@ -81,12 +81,13 @@ define_target "unit-test-tests" do |target|
 	target.provides "Test/UnitTest"
 end
 
-define_generator "Unit/Test" do |generator|
-	generator.description = <<-EOF
+define_target "unit-test-generator" do |target|
+	target.description = <<-EOF
 		Generates a basic test file in the project.
-		
-		usage: teapot generate Unit/Test Namespace::TestName
 	EOF
+	
+	target.depends "Generate/Copy"
+	target.provides "Generate/Unit/Test"
 	
 	def scope_for_namespace(namespace)
 		open = namespace.collect{|name| "namespace #{name}\n{\n"}
@@ -95,18 +96,18 @@ define_generator "Unit/Test" do |generator|
 		return open + close
 	end
 	
-	generator.generate do |full_class_name|
+	target.build do |full_class_name|
 		*path, class_name = full_class_name.split(/::/)
 		
 		if path == []
-			raise GeneratorError.new("You must specify a class name with a namespace!")
+			raise ArgumentError.new("You must specify a class name with a namespace!")
 		end
 		
 		directory = Files::Path.new('test') + path.join('/')
 		directory.mkpath
 		
 		name = Build::Name.new(class_name)
-		substitutions = Substitutions.new
+		substitutions = target.context.substitutions.dup
 		
 		# e.g. Foo Bar, typically used as a title, directory, etc.
 		substitutions['TEST_NAME'] = name.identifier
@@ -115,25 +116,13 @@ define_generator "Unit/Test" do |generator|
 		substitutions['TEST_SUITE_NAME'] = name.identifier + "TestSuite"
 		substitutions['TEST_SUITE_DESCRIPTION'] = full_class_name
 		
+		substitutions['TEST_SOURCE_HEADER'] = "#{full_class_name.gsub('::', '/')}.hpp"
+		
 		# e.g. foo-bar, typically used for targets, executables.
 		substitutions['NAMESPACE'] = scope_for_namespace(path)
 		
-		# The user's current name:
-		substitutions['AUTHOR_NAME'] = context.metadata.user.name
-		
-		if context.project
-			substitutions['PROJECT_NAME'] = context.project.name
-			substitutions['LICENSE'] = context.project.license
-		else
-			substitutions['PROJECT_NAME'] = "Unnamed"
-			substitutions['LICENSE'] = "Unspecified License"
-		end
-		
-		current_date = Time.new
-		substitutions['DATE'] = current_date.strftime("%-d/%-m/%Y")
-		substitutions['YEAR'] = current_date.strftime("%Y")
-		
-		generator.copy('templates/test', directory, substitutions)
+		source_path = Build::Files::Directory.new(target.package.path + "templates/test")
+		generate source: source_path, prefix: target.context.root, substitutions: substitutions
 	end
 end
 
@@ -142,4 +131,6 @@ define_configuration "test" do |configuration|
 	
 	configuration.require "platforms"
 	configuration.require "build-files"
+	
+	configuration.require "generators"
 end
