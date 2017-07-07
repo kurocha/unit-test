@@ -69,8 +69,8 @@ define_target "unit-test" do |target|
 end
 
 define_target "unit-test-tests" do |target|
-	target.build do
-		run tests: 'UnitTest', source_files: target.package.path.glob("test/UnitTest/**/*.cpp")
+	target.build do |*arguments|
+		run tests: 'UnitTest', source_files: target.package.path.glob("test/UnitTest/**/*.cpp"), arguments: arguments
 	end
 	
 	target.depends "Build/Clang"
@@ -133,5 +133,6 @@ define_configuration "test" do |configuration|
 	configuration.require "platforms"
 	configuration.require "build-files"
 	
+	configuration.require 'generate-travis'
 	configuration.require "generate-template"
 end
