@@ -4,24 +4,17 @@ Unit Test is a modern C++ unit testing framework. It compiles multiple test suit
 
 [![Build Status](https://secure.travis-ci.org/dream-framework/unit-test.png)](http://travis-ci.org/dream-framework/unit-test)
 
-## Installation
+## Preparation
 
-Use Teapot to build and install Tagged Format:
+Firstly the build tool `teapot` needs to be installed (which requires [Ruby][2]):
+ 
+	$ gem install teapot
 
-	$ cd unit-test
-	$ sudo gem install teapot
-	$ teapot build Library/UnitTest
+To run unit tests:
 
-Currently, only Mac OS X and Linux are supported using standards conformant C++11 compilers.
+	$ teapot Test/UnitTest
 
-## Modernize Existing tests
-
-Here are some useful regexps to modernize existing unit tests:
-
-### Update Comments
-
-	examiner << (.*?)";
-	examiner << $1." << std::endl;
+[2]: http://www.ruby-lang.org/en/downloads/
 
 ## Usage
 

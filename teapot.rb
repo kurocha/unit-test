@@ -5,14 +5,22 @@
 
 required_version "2.0"
 
-define_project "Unit Test" do |project|
-	project.add_author "Samuel Williams"
-	project.license = "MIT License"
+# Project Metadata
 
+define_project "unit-test" do |project|
+	project.title = "Unit Test"
+	project.summary = 'A simple framework for C++ unit tests.'
+	
+	project.license = "MIT License"
+	
+	project.add_author 'Samuel Williams', email: 'samuel.williams@oriontransfer.co.nz'
+	
 	project.version = "0.1.0"
 end
 
-define_target "unit-test" do |target|
+# Build Targets
+
+define_target 'unit-test-library' do |target|
 	target.build do
 		source_root = target.package.path + 'source'
 		bin_root = target.package.path + 'bin'
@@ -20,8 +28,7 @@ define_target "unit-test" do |target|
 		copy binaries: Files::Directory.new(bin_root)
 		copy headers: Files::Glob.new(source_root, 'UnitTest/**/*.{h,hpp}')
 		
-		build static_library: "UnitTest",
-			source_files: Files::Glob.new(source_root, 'UnitTest/**/*.cpp')
+		build static_library: 'UnitTest', source_files: source_root.glob('UnitTest/**/*.cpp')
 	end
 	
 	target.depends "Build/Files"
@@ -31,7 +38,9 @@ define_target "unit-test" do |target|
 	target.depends "Language/C++11", private: true
 	
 	target.provides "Library/UnitTest" do
-		append linkflags {install_prefix + "lib/libUnitTest.a"}
+		append linkflags [
+			->{install_prefix + 'lib/libUnitTest.a'},
+		]
 		
 		define Rule, "copy.unit-tests" do
 			input :test_assets
@@ -73,10 +82,15 @@ define_target "unit-test-tests" do |target|
 		run tests: 'UnitTest', source_files: target.package.path.glob("test/UnitTest/**/*.cpp"), arguments: arguments
 	end
 	
+	target.depends 'Library/UnitTest'
+	target.provides 'Test/UnitTest'
+	
+	target.depends 'Build/Files'
 	target.depends "Build/Clang"
 	
 	target.depends :platform
 	target.depends "Language/C++11", private: true
+	
 	target.depends "Library/UnitTest"
 	
 	target.provides "Test/UnitTest"
@@ -127,12 +141,20 @@ define_target "unit-test-generator" do |target|
 	end
 end
 
+# Configurations
+
 define_configuration "test" do |configuration|
 	configuration[:source] = "https://github.com/kurocha"
 	
 	configuration.require "platforms"
 	configuration.require "build-files"
 	
+	# Provides all the build related infrastructure:
+	configuration.require 'platforms'
+	
+	# Provides some useful C++ generators:
+	configuration.require 'generate-cpp-class'
+	
+	configuration.require 'generate-project'
 	configuration.require 'generate-travis'
-	configuration.require "generate-template"
 end
