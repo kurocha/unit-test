@@ -96,7 +96,7 @@ define_target "unit-test-tests" do |target|
 	target.provides "Test/UnitTest"
 end
 
-define_target "unit-test-generator" do |target|
+define_target "generate-unit-test" do |target|
 	target.description = <<-EOF
 		Generates a basic test file in the project.
 	EOF
@@ -154,7 +154,6 @@ define_configuration "test" do |configuration|
 	
 	# Provides some useful C++ generators:
 	configuration.require 'generate-cpp-class'
-	
 	configuration.require 'generate-project'
 	configuration.require 'generate-travis'
 end

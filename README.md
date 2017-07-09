@@ -2,9 +2,9 @@
 
 Unit Test is a modern C++ unit testing framework. It compiles multiple test suites into a single executable which can then be used to run unit tests. It uses several advanced features from C++11 including lambdas and initializer lists to improve the readability and reduce boiler plate code and macro usage.
 
-[![Build Status](https://secure.travis-ci.org/dream-framework/unit-test.png)](http://travis-ci.org/dream-framework/unit-test)
+[![Build Status](https://travis-ci.org/kurocha/unit-test.svg?branch=master)](https://travis-ci.org/kurocha/unit-test)
 
-## Preparation
+## Setup
 
 Firstly the build tool `teapot` needs to be installed (which requires [Ruby][2]):
  
