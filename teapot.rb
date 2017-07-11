@@ -137,7 +137,7 @@ define_target "generate-unit-test" do |target|
 		substitutions['NAMESPACE'] = target.scope_for_namespace(path)
 		
 		source_path = Build::Files::Directory.new(target.package.path + "templates/test")
-		generate source: source_path, prefix: target.context.root, substitutions: substitutions
+		generate source: source_path, prefix: directory, substitutions: substitutions
 	end
 end
 
