@@ -14,6 +14,9 @@
 #include <signal.h>
 #include <sys/wait.h>
 
+#include <system_error>
+#include <errno.h>
+
 namespace UnitTest {
 	const char * VERSION = "1.0.0";
 	
@@ -194,7 +197,10 @@ static void change_directory(std::string file_path)
 	
 	file_path.resize(last_slash);
 	
-	chdir(file_path.c_str());
+	auto result = chdir(file_path.c_str());
+	
+	if (result == -1)
+		throw std::system_error(errno, std::generic_category(), "chdir");
 }
 
 int main (int argc, char** argv)
