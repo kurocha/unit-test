@@ -23,7 +23,11 @@ namespace UnitTest
 	class Expectation
 	{
 	public:
-		Expectation(ExaminerT & examiner, const ValueT & value) : _examiner(examiner), _value(value) {}
+		Expectation(ExaminerT & examiner, const ValueT & value, bool inverted = false) : _examiner(examiner), _value(value), _inverted(inverted) {}
+		
+		Expectation to_not() const noexcept {
+			return Expectation(_examiner, _value, !_inverted);
+		}
 		
 		template <typename FunctionT>
 		struct Condition
@@ -35,8 +39,13 @@ namespace UnitTest
 		template <typename OtherT> \
 		void operator op(const OtherT & other) const \
 		{ \
-			_examiner << "Expected " << _value << ' ' << #op << ' ' << other << std::endl; \
-			_examiner.check(_value op other); \
+			if (_inverted == false) { \
+				_examiner << "Expected " << _value << " to be " << #op << ' ' << other << std::endl; \
+				_examiner.check(_value op other); \
+			} else { \
+				_examiner << "Expected " << _value << " to not be " << #op << ' ' << other << std::endl; \
+				_examiner.check(!(_value op other)); \
+			}\
 		}
 		
 		UNITTEST_OPERATOR(==)
@@ -53,14 +62,16 @@ namespace UnitTest
 			try {
 				_examiner << "Expected " << typeid(_value).name() << " to throw " << typeid(ExceptionT).name() << std::endl;
 				_value(arguments...);
-				_examiner.check(false);
+				_examiner.check(_inverted);
 			} catch (ExceptionT & exception) {
-				_examiner.check(true);
+				_examiner.check(!_inverted);
 			}
 		}
 		
 	private:
 		ExaminerT & _examiner;
-		const ValueT & _value;
+		ValueT _value;
+		
+		bool _inverted;
 	};
 }
