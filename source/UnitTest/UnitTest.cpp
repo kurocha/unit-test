@@ -170,8 +170,6 @@ namespace UnitTest {
 		// Enable color output:
 		Streams::TTY tty(std::cerr, Streams::terminal_type(std::cerr));
 		
-		std::cerr << "Colors: " << (bool)tty << std::endl;
-		
 		Statistics overall;
 		
 		for (auto suite : _suites) {
