@@ -17,8 +17,16 @@
 #include <system_error>
 #include <errno.h>
 
+#include <Streams/Terminal.hpp>
+#include <Streams/Color.hpp>
+
 namespace UnitTest {
 	const char * VERSION = "1.0.0";
+	
+	Streams::Color
+		passed_style(Streams::Color::GREEN, Streams::Color::UNSPECIFIED, Streams::Color::BOLD),
+		failed_style(Streams::Color::RED, Streams::Color::UNSPECIFIED, Streams::Color::BOLD),
+		reset_style(-1, -1, Streams::Color::NORMAL);
 	
 	namespace Options {
 		std::string failure_command;
@@ -44,17 +52,18 @@ namespace UnitTest {
 		_failed += other._failed;
 	}
 
-	void Statistics::print_summary (std::string name, std::ostream & out) const
+	void Statistics::print_summary (std::string name, std::ostream & output) const
 	{
-		out << "[" << name << "] " << _passed << " passed";
+		output << "[" << name << "] " << passed_style << _passed << " passed" << reset_style;
+		
 		if (_failed > 0)
-			out << " " << _failed << " failed";
+			output << failed_style << " " << _failed << " failed" << reset_style;
 
-		out << " out of " << _failed + _passed << " total" << std::endl;
+		output << " out of " << _failed + _passed << " total" << std::endl;
 	}
 	
-	Examiner::Examiner(Statistics * statistics, std::ostream & output) : _statistics(statistics), _output(output) {
-		
+	Examiner::Examiner(Statistics * statistics, std::ostream & output) : _statistics(statistics), _output(output)
+	{
 	}
 	
 	/// This function is typically used for parsing OpenGL extension strings.
@@ -101,7 +110,7 @@ namespace UnitTest {
 				run(Options::failure_command);
 			}
 
-			_output << "Failed check: " << _buffer.rdbuf();
+			_output << failed_style << "Failed check: " << reset_style << _buffer.rdbuf();
 		} else {
 			_statistics->pass_test();
 		}
@@ -156,7 +165,13 @@ namespace UnitTest {
 		_suites.push_back(suite);
 	}
 	
-	Statistics Registry::perform_tests(Names filter) {
+	Statistics Registry::perform_tests(Names filter)
+	{
+		// Enable color output:
+		Streams::TTY tty(std::cerr, Streams::terminal_type(std::cerr));
+		
+		std::cerr << "Colors: " << (bool)tty << std::endl;
+		
 		Statistics overall;
 		
 		for (auto suite : _suites) {

@@ -34,6 +34,8 @@ define_target 'unit-test-library' do |target|
 	target.depends "Build/Files"
 	target.depends "Build/Clang"
 	
+	target.depends "Library/Streams"
+	
 	target.depends :platform
 	target.depends "Language/C++11", private: true
 	
@@ -143,8 +145,10 @@ end
 
 # Configurations
 
-define_configuration "test" do |configuration|
+define_configuration "development" do |configuration|
 	configuration[:source] = "https://github.com/kurocha"
+	
+	configuration.import "unit-test"
 	
 	configuration.require "platforms"
 	configuration.require "build-files"
@@ -156,4 +160,11 @@ define_configuration "test" do |configuration|
 	configuration.require 'generate-cpp-class'
 	configuration.require 'generate-project'
 	configuration.require 'generate-travis'
+
+end
+
+define_configuration "unit-test" do |configuration|
+	configuration.public!
+	
+	configuration.require "streams"
 end
