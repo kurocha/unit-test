@@ -67,7 +67,7 @@ namespace UnitTest
 		
 	private:
 		ExaminerT & _examiner;
-		ValueT _value;
+		const ValueT & _value;
 		
 		bool _inverted;
 	};
