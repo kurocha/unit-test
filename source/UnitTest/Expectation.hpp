@@ -11,6 +11,8 @@
 #include <iostream>
 #include <typeinfo>
 
+#include <Streams/Safe.hpp>
+
 namespace UnitTest
 {
 	std::ostream & operator<< (std::ostream & out, const std::type_info & rhs);
@@ -37,10 +39,10 @@ namespace UnitTest
 		void operator op(const OtherT & other) const \
 		{ \
 			if (_inverted == false) { \
-				_examiner << "Expected " << _value << " to be " << #op << ' ' << other << std::endl; \
+				_examiner << "Expected " << Streams::safe(_value) << " to be " << #op << ' ' << Streams::safe(other) << std::endl; \
 				_examiner.check(_value op other); \
 			} else { \
-				_examiner << "Expected " << _value << " to not be " << #op << ' ' << other << std::endl; \
+				_examiner << "Expected " << Streams::safe(_value) << " to not be " << #op << ' ' << Streams::safe(other) << std::endl; \
 				_examiner.check(!(_value op other)); \
 			}\
 		}
