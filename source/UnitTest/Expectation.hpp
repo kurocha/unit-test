@@ -15,9 +15,6 @@
 
 namespace UnitTest
 {
-	std::ostream & operator<< (std::ostream & out, const std::type_info & rhs);
-	std::ostream & operator<< (std::ostream & out, const std::nullptr_t &);
-	
 	template <typename ExaminerT, typename ValueT>
 	class Expectation
 	{
@@ -59,7 +56,7 @@ namespace UnitTest
 		template <typename ExceptionT, typename... ArgumentsT>
 		void to_throw(ArgumentsT... arguments) {
 			try {
-				_examiner << "Expected " << typeid(_value).name() << " to throw " << typeid(ExceptionT).name() << std::endl;
+				_examiner << "Expected " << Streams::safe(typeid(_value)) << " to throw " << Streams::safe(typeid(ExceptionT)) << std::endl;
 				_value(arguments...);
 				_examiner.check(_inverted);
 			} catch (ExceptionT & exception) {

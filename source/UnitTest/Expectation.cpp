@@ -10,13 +10,4 @@
 
 namespace UnitTest
 {
-	std::ostream & operator<< (std::ostream & out, const std::type_info & rhs)
-	{
-		return out << "typeinfo(" << rhs.name() << ")";
-	}
-	
-	std::ostream & operator<< (std::ostream & out, const std::nullptr_t &)
-	{
-		return out << "nullptr";
-	}
 }
