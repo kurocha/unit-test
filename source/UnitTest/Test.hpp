@@ -10,6 +10,8 @@
 
 #include "Examiner.hpp"
 
+#include <functional>
+
 namespace UnitTest
 {
 	// The test function type:
