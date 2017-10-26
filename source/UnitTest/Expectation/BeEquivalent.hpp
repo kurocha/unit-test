@@ -23,7 +23,7 @@ namespace UnitTest
 		
 		std::ostream & operator<<(std::ostream & output)
 		{
-			output << "be equivalent to " << Streams::safe(expected_value);
+			return output << "be equivalent to " << Streams::safe(expected_value);
 		}
 	};
 	
