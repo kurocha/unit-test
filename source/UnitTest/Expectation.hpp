@@ -80,7 +80,7 @@ namespace UnitTest
 		}
 		
 		template <typename FunctionT>
-		void check(bool condition, FunctionT function) const
+		bool check(bool condition, FunctionT function) const
 		{
 			if (!_inverted) {
 				_examiner << "Expected " << Streams::safe(_value) << " to " << function << std::endl;
@@ -89,6 +89,8 @@ namespace UnitTest
 				_examiner << "Expected " << Streams::safe(_value) << " to not " << function << std::endl;
 				_examiner.check(!condition);
 			}
+			
+			return condition;
 		}
 		
 	private:

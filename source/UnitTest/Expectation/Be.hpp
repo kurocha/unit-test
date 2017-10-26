@@ -19,10 +19,9 @@ namespace UnitTest
 		const RightT & right;
 		
 		template <typename ExaminerT, typename ValueT>
-		void operator()(const ExaminerT & examiner, const ValueT & value) const
+		bool operator()(const ExaminerT & examiner, const ValueT & value) const
 		{
-			left(examiner, value);
-			right(examiner, value);
+			return left(examiner, value) && right(examiner, value);
 		}
 		
 		friend std::ostream & operator<<(std::ostream & output, BeAnd & condition)
@@ -44,10 +43,9 @@ namespace UnitTest
 		const RightT & right;
 		
 		template <typename ExaminerT, typename ValueT>
-		void operator()(const ExaminerT & examiner, const ValueT & value) const
+		bool operator()(const ExaminerT & examiner, const ValueT & value) const
 		{
-			left(examiner, value);
-			right(examiner, value);
+			return left(examiner, value) || right(examiner, value);
 		}
 		
 		friend std::ostream & operator<<(std::ostream & output, BeOr & condition)
@@ -68,7 +66,7 @@ namespace UnitTest
 		const ExpectedValueT & expected_value;
 		
 		template <typename ExaminerT, typename ValueT>
-		void operator()(const ExaminerT & examiner, const ValueT & value) const
+		bool operator()(const ExaminerT & examiner, const ValueT & value) const
 		{
 			examiner.check(value == expected_value, *this);
 		}
@@ -97,7 +95,7 @@ namespace UnitTest
 		const ExpectedValueT & expected_value;
 		
 		template <typename ExaminerT, typename ValueT>
-		void operator()(const ExaminerT & examiner, const ValueT & value) const
+		bool operator()(const ExaminerT & examiner, const ValueT & value) const
 		{
 			examiner.check(value != expected_value, *this);
 		}
@@ -126,7 +124,7 @@ namespace UnitTest
 		const ExpectedValueT & expected_value;
 		
 		template <typename ExaminerT, typename ValueT>
-		void operator()(const ExaminerT & examiner, const ValueT & value) const
+		bool operator()(const ExaminerT & examiner, const ValueT & value) const
 		{
 			examiner.check(value < expected_value, *this);
 		}
@@ -155,7 +153,7 @@ namespace UnitTest
 		const ExpectedValueT & expected_value;
 		
 		template <typename ExaminerT, typename ValueT>
-		void operator()(const ExaminerT & examiner, const ValueT & value) const
+		bool operator()(const ExaminerT & examiner, const ValueT & value) const
 		{
 			examiner.check(value <= expected_value, *this);
 		}
@@ -184,7 +182,7 @@ namespace UnitTest
 		const ExpectedValueT & expected_value;
 		
 		template <typename ExaminerT, typename ValueT>
-		void operator()(const ExaminerT & examiner, const ValueT & value) const
+		bool operator()(const ExaminerT & examiner, const ValueT & value) const
 		{
 			examiner.check(value > expected_value, *this);
 		}
@@ -213,7 +211,7 @@ namespace UnitTest
 		const ExpectedValueT & expected_value;
 		
 		template <typename ExaminerT, typename ValueT>
-		void operator()(const ExaminerT & examiner, const ValueT & value) const
+		bool operator()(const ExaminerT & examiner, const ValueT & value) const
 		{
 			examiner.check(value >= expected_value, *this);
 		}

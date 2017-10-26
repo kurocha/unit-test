@@ -18,7 +18,7 @@ namespace UnitTest
 		template <typename ExaminerT, typename ValueT>
 		bool operator()(ExaminerT & examiner, const ValueT & value)
 		{
-			examiner.check(value.equivalent(expected_value), *this);
+			return examiner.check(value.equivalent(expected_value), *this);
 		}
 		
 		std::ostream & operator<<(std::ostream & output)
