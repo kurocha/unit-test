@@ -41,6 +41,14 @@ Typically, you'd create a directory called `test` and then, per component, creat
 
 Perhaps a canonical example would be to look at existing projects that use `unit-test`, including `unit-test` itself, [Tagged Format](https://github.com/dream-framework/tagged-format) and [Euclid](https://github.com/dream-framework/euclid).
 
+### Migration
+
+To migrate away from the `Test.*.cpp` prefix use the following shell:
+
+```bash
+for f in test/**/*.cpp; do echo mv "$f" "${f#Test.}"; done
+```
+
 ## Contributing
 
 1. Fork it
