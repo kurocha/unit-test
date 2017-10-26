@@ -90,5 +90,4 @@ install:
 # Run tests:
 script:
   - teapot fetch
-  - teapot build "Test/*"
-
+  - teapot build "Test/*" $TARGETS
