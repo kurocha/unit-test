@@ -37,7 +37,7 @@ define_target 'unit-test-library' do |target|
 	target.depends "Library/Streams"
 	
 	target.depends :platform
-	target.depends "Language/C++11", private: true
+	target.depends "Language/C++14", private: true
 	
 	target.provides "Library/UnitTest" do
 		append linkflags [
@@ -91,7 +91,7 @@ define_target "unit-test-tests" do |target|
 	target.depends "Build/Clang"
 	
 	target.depends :platform
-	target.depends "Language/C++11", private: true
+	target.depends "Language/C++14", private: true
 	
 	target.depends "Library/UnitTest"
 	
