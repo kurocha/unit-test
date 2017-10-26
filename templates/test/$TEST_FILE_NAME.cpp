@@ -1,5 +1,5 @@
 //
-//  Test.$TEST_FILE_NAME.cpp
+//  $TEST_FILE_NAME.cpp
 //  This file is part of the "$PROJECT_NAME" project and released under the $LICENSE.
 //
 //  Created by $AUTHOR_NAME on $DATE.
@@ -16,7 +16,7 @@ UnitTest::Suite $TEST_SUITE_NAME {
 	
 	{"it should have some real tests",
 		[](UnitTest::Examiner & examiner) {
-			examiner.expect(false) == true;
+			examiner.expect(false).to(be_true);
 		}
 	},
 };

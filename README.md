@@ -33,7 +33,7 @@ Typically, you'd create a directory called `test` and then, per component, creat
 					statistics.pass_test();
 					statistics.fail_test();
 			
-					examiner.check_equal(statistics.failed(), 1);
+					examiner.expect(statistics.failed()).to(be_true);
 				}
 			},
 		};

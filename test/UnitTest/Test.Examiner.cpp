@@ -1,34 +1,21 @@
+//
+//  Test.Examiner.cpp
+//  This file is part of the "Unit Test" project and released under the MIT License.
+//
+//  Created by Samuel Williams on 27/10/2017.
+//  Copyright, 2017, by Samuel Williams. All rights reserved.
+//
 
 #include <UnitTest/UnitTest.hpp>
 
+#include <UnitTest/Examiner.hpp>
+
 namespace UnitTest
 {
-	UnitTest::Suite StatisticsTestSuite {
-		"UnitTest::Statistics",
-		
-		{"Basic pass and fail",
-			[](UnitTest::Examiner & examiner) {
-				UnitTest::Statistics statistics;
-				
-				statistics.pass_test();
-				statistics.fail_test();
-				
-				examiner.expect(statistics.passed()) == 1;
-				examiner.expect(statistics.failed()) == 1;
-				
-				// Append statistics, in this case we just double everything:
-				statistics += statistics;
-				
-				examiner.expect(statistics.passed()) == 2;
-				examiner.expect(statistics.failed()) == 2;
-			}
-		},
-	};
-
 	UnitTest::Suite ExaminerTestSuite {
 		"UnitTest::Examiner",
 
-		{"Output messages and statistics",
+		{"it prints messages and statistics",
 			[](UnitTest::Examiner & examiner) {
 				Statistics statistics;
 				std::stringstream buffer;
@@ -42,10 +29,10 @@ namespace UnitTest
 				test_examiner.check(true);
 
 				examiner << "The test examiner should have passed once." << std::endl;
-				examiner.check_equal(statistics.passed(), 1);
+				examiner.expect(statistics.passed()).to(be == 1);
 
 				examiner << "The test examiner should have failed once." << std::endl;
-				examiner.check_equal(statistics.failed(), 1);
+				examiner.expect(statistics.failed()).to(be == 1);
 
 				auto output_string = buffer.str();
 
