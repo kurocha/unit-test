@@ -15,28 +15,10 @@ namespace UnitTest
 		failed_style(Streams::Color::RED, Streams::Color::UNSPECIFIED, Streams::Color::BOLD),
 		reset_style(-1, -1, Streams::Color::NORMAL);
 	
-	Assertions::Assertions(std::ostream & output) : _output(output)
+	Assertions::Assertions(std::ostream & output, std::size_t level) : _output(output), _level(level)
 	{
-		
 	}
 	
-	Assertions::Assertions(Assertions * parent, bool expected) : _output(parent._output), _parent(parent), _expected(expected)
-	{
-		
-	}
-	
-	Assertions::~Assertions()
-	{
-		if (expected == false)
-		}
-		if (expected == false) {
-			if (_failed == 0) {
-				// We expected something to fail, but nothing did, so we need to print out a detailed report.
-				
-			}
-		}
-	}
-
 	std::ostream & Assertions::assert(bool condition) noexcept
 	{
 		if (condition) {
@@ -66,13 +48,5 @@ namespace UnitTest
 			output << failed_style << " " << _failed << " failed" << reset_style;
 		
 		output << " out of " << _failed + _passed << " total" << std::endl;
-		
-		if (assertions.expected == true && _failed > 0) {
-			output << "Expected all assertions to pass:" << std::endl;
-			for (auto & assertion : _ordered) {
-				if (assertion.failed())
-					output << assertion.buffer.rdbuf();
-			}
-		}
 	}
 }

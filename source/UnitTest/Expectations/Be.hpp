@@ -14,6 +14,18 @@ namespace UnitTest
 {
 	namespace Expectations
 	{
+		template <typename RightT>
+		struct BeNot
+		{
+			const RightT & right;
+			
+			template <typename ValueT>
+			bool operator()(To<ValueT> & to) const
+			{
+				return right(to.invert());
+			}
+		};
+		
 		template <typename LeftT, typename RightT>
 		struct BeAnd
 		{

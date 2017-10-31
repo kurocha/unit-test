@@ -18,7 +18,8 @@ namespace UnitTest
 	typedef std::function<void (Examiner &)> TestFunctionT;
 
 	/// A test that must be completed successfully.
-	class Test {
+	class Test
+	{
 		std::string _name;
 		TestFunctionT _function;
 		

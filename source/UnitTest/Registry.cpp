@@ -21,17 +21,13 @@ namespace UnitTest
 		// Enable color output:
 		Streams::TTY tty(std::cerr, Streams::terminal_type(std::cerr));
 		
-		Statistics overall;
+		Assertions overall(std::cerr);
 		
 		for (auto suite : _suites) {
 			if (filter.empty() || filter.find(suite->name()) != filter.end()) {
-				std::cerr << std::endl;
-				overall += suite->run(std::cerr);
+				overall.assert(suite);
 			}
 		}
-		
-		std::cerr << std::endl;
-		overall.print_summary("Summary", std::cerr);
 		
 		return overall;
 	}

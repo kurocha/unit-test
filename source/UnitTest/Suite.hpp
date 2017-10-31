@@ -36,7 +36,7 @@ namespace UnitTest
 	public:
 		Suite(std::initializer_list<Entry> entries);
 		
-		Statistics run(std::ostream & out);
+		void operator()(Assertions & assertions);
 		
 		auto & name() const {return _name;}
 		auto & tests() const {return _tests;}

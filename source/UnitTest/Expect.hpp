@@ -24,16 +24,6 @@ namespace UnitTest
 	struct Expect;
 	
 	template <typename ParentT, typename ValueT>
-	struct ToNot
-	{
-		// It will always be of type Expect<...>
-		ParentT & parent;
-		const ValueT & value;
-		std::size_t _failed;
-		
-	};
-	
-	template <typename ParentT, typename ValueT>
 	struct To
 	{
 		// It will always be of type Expect<...>

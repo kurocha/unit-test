@@ -24,24 +24,19 @@ namespace UnitTest
 		shared_registry()->add(this);
 	}
 	
-	Statistics Suite::run(std::ostream & out)
+	void Suite::operator()(Assertions & assertions)
 	{
-		Statistics total;
-		
-		out << *this << std::endl;
-		
 		for (auto test : _tests) {
-			Statistics results;
-			Examiner examiner(&results);
-			
 			try {
-				test.invoke(examiner);
+				assertions.assert(test);
 			} catch (std::exception & error) {
+				assertions.assert(false, )
+				
 				out << "Test failed with unhandled exception: " << error.what() << std::endl;
 				results.fail();
 			}
 			
-			results.print_summary(test.name(), out);
+			out << test.name() << ": " << results << std::endl;
 			
 			total += results;
 		}
