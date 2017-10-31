@@ -10,5 +10,8 @@
 
 namespace UnitTest
 {
-	Be be;
+	namespace Expectations
+	{
+		Be be;
+	}
 }

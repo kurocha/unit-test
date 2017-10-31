@@ -12,6 +12,8 @@
 
 namespace UnitTest
 {
+	using namespace UnitTest::Expectations;
+	
 	UnitTest::Suite RegistryTestSuite {
 		"UnitTest::Registry",
 		

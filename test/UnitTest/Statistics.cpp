@@ -12,6 +12,8 @@
 
 namespace UnitTest
 {
+	using namespace UnitTest::Expectations;
+	
 	UnitTest::Suite StatisticsTestSuite {
 		"UnitTest::Statistics",
 		
@@ -19,8 +21,8 @@ namespace UnitTest
 			[](UnitTest::Examiner & examiner) {
 				UnitTest::Statistics statistics;
 				
-				statistics.pass_test();
-				statistics.fail_test();
+				statistics.pass();
+				statistics.fail();
 				
 				examiner.expect(statistics.passed()) == 1;
 				examiner.expect(statistics.failed()) == 1;

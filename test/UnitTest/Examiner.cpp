@@ -12,6 +12,8 @@
 
 namespace UnitTest
 {
+	using namespace UnitTest::Expectations;
+	
 	UnitTest::Suite ExaminerTestSuite {
 		"UnitTest::Examiner",
 
@@ -37,10 +39,10 @@ namespace UnitTest
 				auto output_string = buffer.str();
 
 				examiner << "The test examiner should have printed out the (A) message" << std::endl;
-				examiner.check(output_string.find("(A)") != std::string::npos);
+				examiner.expect(output_string).to(include("(A)"));
 
 				examiner << "The test examiner shouldn't have printed out the (B) message" << std::endl;
-				examiner.check(output_string.find("(B)") == std::string::npos);
+				examiner.expect(output_string).to_not(include("(B)"));
 			}
 		},
 	};

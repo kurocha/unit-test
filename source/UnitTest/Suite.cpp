@@ -12,7 +12,8 @@
 
 namespace UnitTest
 {
-	Suite::Suite(std::initializer_list<Entry> entries) {
+	Suite::Suite(std::initializer_list<Entry> entries)
+	{
 		for (auto & entry : entries) {
 			if (entry.test)
 				_tests.emplace(_tests.end(), entry.name, entry.test);
@@ -23,10 +24,11 @@ namespace UnitTest
 		shared_registry()->add(this);
 	}
 	
-	Statistics Suite::run(std::ostream & out) {
+	Statistics Suite::run(std::ostream & out)
+	{
 		Statistics total;
 		
-		out << "--- " << _name << " ---" << std::endl;
+		out << *this << std::endl;
 		
 		for (auto test : _tests) {
 			Statistics results;
@@ -36,7 +38,7 @@ namespace UnitTest
 				test.invoke(examiner);
 			} catch (std::exception & error) {
 				out << "Test failed with unhandled exception: " << error.what() << std::endl;
-				results.fail_test();
+				results.fail();
 			}
 			
 			results.print_summary(test.name(), out);
@@ -45,5 +47,10 @@ namespace UnitTest
 		}
 		
 		return total;
+	}
+	
+	std::ostream & operator<<(std::ostream & output, const Suite & suite)
+	{
+		return output << "--- " << suite.name() << " ---";
 	}
 }

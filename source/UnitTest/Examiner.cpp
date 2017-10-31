@@ -16,24 +16,30 @@ namespace UnitTest
 		failed_style(Streams::Color::RED),
 		reset_style(-1, -1, Streams::Color::NORMAL);
 	
-	Examiner::Examiner(Statistics * statistics, std::ostream & output) : _statistics(statistics), _output(output)
+	Examiner::Examiner(Assertions & assertions, std::ostream & output) : _assertions(assertions), _output(output)
 	{
 	}
 	
 	void Examiner::check(bool condition) {
 		if (condition == false) {
-			_statistics->fail_test();
-
-			// if (Options::failure_command.size() > 0) {
-			// 	run(Options::failure_command);
-			// }
-
-			_output << failed_style << "Failed check: " << reset_style << _buffer.rdbuf();
+			fail() << _buffer.rdbuf();
 		} else {
-			_statistics->pass_test();
+			pass();
 		}
 
 		// Clear the buffer:
 		_buffer.str("");
+	}
+	
+	std::ostream & Examiner::fail()
+	{
+		_statistics->fail();
+		
+		return _output << failed_style << "Failed check: " << reset_style;
+	}
+	
+	void Examiner::pass()
+	{
+		_statistics->pass();
 	}
 }

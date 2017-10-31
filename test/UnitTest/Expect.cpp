@@ -1,12 +1,14 @@
 
 #include <UnitTest/UnitTest.hpp>
-#include <UnitTest/Expectation.hpp>
+#include <UnitTest/Expect.hpp>
 
 #include <stdexcept>
 
 namespace UnitTest
 {
-	UnitTest::Suite ExpectationTestSuite {
+	using namespace UnitTest::Expectations;
+	
+	UnitTest::Suite ExpectTestSuite {
 		"UnitTest::Expectation",
 		
 		{"it should report expectations using to",
@@ -52,5 +54,21 @@ namespace UnitTest
 				}).to_not(throw_exception<std::exception>());
 			}
 		},
+		
+		{"it can iterate collections",
+			[](auto & examiner) {
+				examiner.expect(sequence(1, 2, 3, 4)).to_each(be > 0);
+			}
+		},
+		
+		{"it can compare sequences",
+			[](auto & examiner) {
+				examiner.expect(sequence(1, 2, 3, 4)).to(be_sequence(1, 2, 3, 4));
+				
+				examiner.expect(sequence(1, 2, 3, 4)).to_not(be_sequence(1, 1, 1, 1));
+				// examiner.expect(sequence(1, 2, 3, 4)).to_not(be_sequence(1, 2, 3));
+				// examiner.expect(sequence(1, 2, 3, 4)).to_not(be_sequence(1, 2, 3, 4, 5));
+			}
+		}
 	};
 }

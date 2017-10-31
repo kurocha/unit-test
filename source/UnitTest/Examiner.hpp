@@ -9,31 +9,46 @@
 #pragma once
 
 #include "Statistics.hpp"
-#include "Expectation.hpp"
 
 #include <iostream>
 #include <sstream>
 
 namespace UnitTest
 {
+	template <typename ValueT>
+	struct Expect;
+	
+	class Assertions;
+	
 	/// A examiner runs the tests and keeps track of the results.
 	class Examiner
 	{
-		Statistics * _statistics;
+		Assertions & assertions;
 
 		std::stringstream _buffer;
 		std::ostream & _output;
-
+		
 	public:
-		Examiner(Statistics * statistics, std::ostream & output = std::cerr);
+		Examiner(Assertions & assertions, std::ostream & output = std::cerr);
 		
 		template <typename ValueT>
-		Expectation<Examiner, ValueT> expect(const ValueT & value) {
-			return {*this, value};
+		Expect<Examiner, ValueT> expect(const ValueT & value) {
+			return {*this, value, assertions};
 		}
 		
 		// Check if the condition is true, otherwise the test fails.
-		void check(bool condition);
+		[[deprecated]] void check(bool condition);
+		
+		template <typename FunctionT>
+		bool check(bool condition, FunctionT function)
+		{
+			_assertions.assert(condition) << function;
+			
+			return condition;
+		}
+		
+		std::ostream & fail();
+		void pass();
 		
 		template <typename LeftT, typename RightT>
 		[[deprecated]] void check_equal(LeftT left, RightT right) {
@@ -43,9 +58,11 @@ namespace UnitTest
 		}
 
 		template <typename ValueT>
-		std::ostream & operator<< (ValueT && value)
+		std::ostream & operator<<(ValueT && value)
 		{
 			return (_buffer << value);
 		}
+		
+		void print(const Assertions & assertions);
 	};
 }

@@ -11,10 +11,12 @@
 #include "Test.hpp"
 
 #include <vector>
+#include <iosfwd>
 
 namespace UnitTest
 {
-	class Suite {
+	class Suite
+	{
 	public:
 		struct Entry {
 			const char * name;
@@ -38,5 +40,7 @@ namespace UnitTest
 		
 		auto & name() const {return _name;}
 		auto & tests() const {return _tests;}
+		
+		friend std::ostream & operator<<(std::ostream &, const Suite &);
 	};
 }

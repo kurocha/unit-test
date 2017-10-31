@@ -9,10 +9,13 @@
 
 #pragma once
 
-#include "Expectation.hpp"
-#include "Expectation/Be.hpp"
-#include "Expectation/BeLogically.hpp"
-#include "Expectation/BeEquivalent.hpp"
-#include "Expectation/ThrowException.hpp"
+#include "Expect.hpp"
+
+#include "Expectations/Be.hpp"
+#include "Expectations/Include.hpp"
+#include "Expectations/BeSequence.hpp"
+#include "Expectations/BeLogically.hpp"
+#include "Expectations/BeEquivalent.hpp"
+#include "Expectations/ThrowException.hpp"
 
 #include "Registry.hpp"
