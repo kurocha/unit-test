@@ -43,6 +43,6 @@ namespace UnitTest
 	
 	std::ostream & operator<<(std::ostream & output, const Suite & suite)
 	{
-		return output << "Tests for " << name_style << suite.name() << reset_style;
+		return output << "Test Suite " << name_style << Streams::safe(suite.name()) << reset_style;
 	}
 }

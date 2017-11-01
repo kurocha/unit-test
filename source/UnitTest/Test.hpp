@@ -26,20 +26,10 @@ namespace UnitTest
 	public:
 		Test(std::string name, TestFunctionT function);
 		
-		std::string name() const { return _name; }
+		std::string name() const {return _name;}
 		
-		void operator()(Assertions & assertions) const noexcept
-		{
-			Examiner examiner{assertions};
-			
-			_function(examiner);
-			
-			assertions.output() << "[" << *this << "] " << assertions << std::endl;
-		}
+		void operator()(Assertions & assertions) const noexcept;
 		
-		friend std::ostream & operator<<(std::ostream & output, const Test & test)
-		{
-			return output << test.name();
-		}
+		friend std::ostream & operator<<(std::ostream & output, const Test & test);
 	};
 }

@@ -16,13 +16,12 @@
 
 namespace UnitTest
 {
+	extern const Streams::Color PASSED_STYLE, FAILED_STYLE, RESET_STYLE;
+	
 	class Assertions
 	{
 	public:
-		// Top level constructor.
-		Assertions(std::ostream & output, std::size_t level = 0, bool inverted = false) : _output(output), _level(level), _inverted(inverted)
-		{
-		}
+		Assertions(std::ostream & output, std::size_t level = 0, bool inverted = false);
 		
 		std::size_t passed() const noexcept {return _passed;}
 		std::size_t failed() const noexcept {return _failed;}
@@ -30,14 +29,7 @@ namespace UnitTest
 		
 		std::ostream & output() const noexcept {return _output;}
 		
-		explicit operator bool() const noexcept
-		{
-			if (!_inverted) {
-				return failed() == 0;
-			} else {
-				return failed() > 0 || passed() == 0;
-			}
-		}
+		explicit operator bool() const noexcept;
 		
 		template <typename FunctionT>
 		bool assert(FunctionT function)
@@ -72,19 +64,17 @@ namespace UnitTest
 		template <typename FunctionT>
 		bool assert(bool condition, FunctionT function)
 		{
-			// std::cerr << "condition: " << condition << " inverted: " << _inverted << std::endl;
-			
 			if (condition) {
 				_passed += 1;
 				
 				if (_inverted) {
-					_output << indent() << function << std::endl;
+					_output << indent() << PASSED_STYLE << "✓ " << RESET_STYLE << function << std::endl;
 				}
 			} else {
 				_failed += 1;
 				
 				if (!_inverted) {
-					_output << indent() << function << std::endl;
+					_output << indent() << FAILED_STYLE << "✗ " << RESET_STYLE << function << std::endl;
 				}
 			}
 			
@@ -104,8 +94,8 @@ namespace UnitTest
 					_output << indent() << function;
 					
 					if (buffer) {
-						_output << " failed because all of the following passed:" << std::endl;
-						_output << buffer.rdbuf() << std::endl;
+						_output << " failed because:" << std::endl;
+						_output << buffer.rdbuf();
 					}
 				}
 			} else {
@@ -115,9 +105,8 @@ namespace UnitTest
 					_output << indent() << function;
 					
 					if (buffer) {
-						//✓ ✗
-						_output << " failed because all of the following failed:" << std::endl;
-						_output << buffer.rdbuf() << std::endl;
+						_output << " failed because:" << std::endl;
+						_output << buffer.rdbuf();
 					}
 				}
 			}

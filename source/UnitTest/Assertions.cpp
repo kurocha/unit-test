@@ -12,17 +12,30 @@
 
 namespace UnitTest
 {
-	static Streams::Color
-		passed_style(Streams::Color::GREEN, Streams::Color::UNSPECIFIED, Streams::Color::BOLD),
-		failed_style(Streams::Color::RED, Streams::Color::UNSPECIFIED, Streams::Color::BOLD),
-		reset_style(-1, -1, Streams::Color::NORMAL);
+	const Streams::Color
+		PASSED_STYLE(Streams::Color::GREEN, Streams::Color::UNSPECIFIED, Streams::Color::BOLD),
+		FAILED_STYLE(Streams::Color::RED, Streams::Color::UNSPECIFIED, Streams::Color::BOLD),
+		RESET_STYLE(-1, -1, Streams::Color::NORMAL);
+	
+	Assertions::Assertions(std::ostream & output, std::size_t level, bool inverted) : _output(output), _level(level), _inverted(inverted)
+	{
+	}
+	
+	Assertions::operator bool() const noexcept
+	{
+		if (!_inverted) {
+			return failed() == 0;
+		} else {
+			return failed() > 0 || passed() == 0;
+		}
+	}
 	
 	std::ostream & operator<<(std::ostream & output, const Assertions & assertions)
 	{
-		output << passed_style << assertions.passed() << " passed" << reset_style;
+		output << PASSED_STYLE << assertions.passed() << " passed" << RESET_STYLE;
 		
 		if (assertions.failed())
-			output << failed_style << " " << assertions.failed() << " failed" << reset_style;
+			output << FAILED_STYLE << " " << assertions.failed() << " failed" << RESET_STYLE;
 		
 		output << " out of " << assertions.total() << " total (" << assertions._count << " assertions)";
 		
