@@ -63,7 +63,7 @@ namespace UnitTest
 		
 		{"it can compare sequences",
 			[](auto & examiner) {
-				examiner.expect(sequence(1, 2, 3, 4)).to(be_sequence(1, 2, 3, 4, 5));
+				examiner.expect(sequence(1, 2, 3, 4)).to(be_sequence(1, 2, 3, 4));
 				
 				examiner.expect(sequence(1, 2, 3, 4)).to_not(be_sequence(1, 1, 1, 1));
 				examiner.expect(sequence(1, 2, 3, 4)).to_not(be_sequence(1, 2, 3));
