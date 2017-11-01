@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <typeinfo>
+
 namespace UnitTest
 {
 	namespace Expectations
