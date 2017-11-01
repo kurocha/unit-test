@@ -37,17 +37,16 @@ namespace UnitTest
 			std::tuple<ArgumentsT...> arguments;
 			
 			template <typename ValueT>
-			void operator()(To<ValueT> & to)
+			void operator()(const ValueT & value, Assertions & assertions) const
 			{
 				try {
-					apply(to.value, arguments);
+					apply(value, arguments);
 					
 					// Didn't throw any exception, so the expectation failed.
-					to.check(false, *this);
+					assertions.assert(false, *this);
 				} catch (ExceptionT & exception) {
-					
 					// Did throw an exception, so the expectation was confirmed.
-					to.check(true, *this);
+					assertions.assert(true, *this);
 				}
 			}
 			

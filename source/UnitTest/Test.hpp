@@ -28,6 +28,18 @@ namespace UnitTest
 		
 		std::string name() const { return _name; }
 		
-		void invoke(Examiner & examiner);
+		void operator()(Assertions & assertions) const noexcept
+		{
+			Examiner examiner{assertions};
+			
+			_function(examiner);
+			
+			assertions.output() << "[" << *this << "] " << assertions << std::endl;
+		}
+		
+		friend std::ostream & operator<<(std::ostream & output, const Test & test)
+		{
+			return output << test.name();
+		}
 	};
 }

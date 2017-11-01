@@ -21,7 +21,7 @@ namespace UnitTest
 			[](UnitTest::Examiner & examiner) {
 				Test test = {"Foobar", [](UnitTest::Examiner & examiner){}};
 				
-				examiner.expect(test.name()).to(be == std::string{"Foobar"});
+				examiner.expect(test.name()).to(be == "Foobar");
 			}
 		},
 	};

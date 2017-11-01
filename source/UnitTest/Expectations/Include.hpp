@@ -20,19 +20,19 @@ namespace UnitTest
 			const NeedleT & needle;
 			
 			template <typename ValueT>
-			bool operator()(To<ValueT> & to)
+			bool operator()(const ValueT & value, Assertions & assertions) const
 			{
-				auto begin = std::begin(to.value);
-				auto end = std::end(to.value);
+				auto begin = std::begin(value);
+				auto end = std::end(value);
 				
-				return to.check(std::find(begin, end, needle) != end, *this);
+				return assertions.assert(std::find(begin, end, needle) != end, *this);
 			}
 			
-			bool operator()(To<std::string> & to)
+			bool operator()(const std::string & value, Assertions & assertions) const
 			{
-				auto pos = to.value.find(needle);
+				auto pos = value.find(needle);
 				
-				return to.check(pos != std::string::npos, *this);
+				return assertions.assert(pos != std::string::npos, *this);
 			}
 			
 			friend std::ostream & operator<<(std::ostream & output, const Include & condition)

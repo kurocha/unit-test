@@ -8,61 +8,45 @@
 
 #pragma once
 
-#include "Statistics.hpp"
-
 #include <iostream>
 #include <sstream>
 
+#include "Assertions.hpp"
+#include "Expect.hpp"
+
+#include "Expectations/Be.hpp"
+#include "Expectations/BeLogically.hpp"
+
 namespace UnitTest
 {
-	template <typename ValueT>
-	struct Expect;
-	
-	class Assertions;
-	
 	/// A examiner runs the tests and keeps track of the results.
 	class Examiner
 	{
-		Assertions & assertions;
-
-		std::stringstream _buffer;
-		std::ostream & _output;
+		Assertions & _assertions;
 		
 	public:
-		Examiner(Assertions & assertions, std::ostream & output = std::cerr);
+		Examiner(Assertions & assertions) : _assertions(assertions) {};
 		
 		template <typename ValueT>
-		Expect<Examiner, ValueT> expect(const ValueT & value) {
-			return {*this, value, assertions};
+		Expect<ValueT> expect(const ValueT & value) {
+			return {_assertions, value};
 		}
 		
 		// Check if the condition is true, otherwise the test fails.
-		[[deprecated]] void check(bool condition);
-		
-		template <typename FunctionT>
-		bool check(bool condition, FunctionT function)
+		[[deprecated]] void check(bool condition)
 		{
-			_assertions.assert(condition) << function;
-			
-			return condition;
-		}
-		
-		std::ostream & fail();
-		void pass();
-		
-		template <typename LeftT, typename RightT>
-		[[deprecated]] void check_equal(LeftT left, RightT right) {
-			(*this) << left << " == " << right << std::endl;
-			
-			check(left == right);
+			expect(condition).to(Expectations::be_true);
 		}
 
-		template <typename ValueT>
-		std::ostream & operator<<(ValueT && value)
-		{
-			return (_buffer << value);
+		template <typename LeftT, typename RightT>
+		[[deprecated]] void check_equal(LeftT left, RightT right) {
+			expect(left).to(Expectations::be == right);
 		}
 		
-		void print(const Assertions & assertions);
+		template <typename ValueT>
+		std::ostream & operator<< (ValueT && value)
+		{
+			return _assertions.output() << value;
+		}
 	};
 }

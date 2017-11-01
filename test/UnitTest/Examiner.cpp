@@ -16,34 +16,5 @@ namespace UnitTest
 	
 	UnitTest::Suite ExaminerTestSuite {
 		"UnitTest::Examiner",
-
-		{"it prints messages and statistics",
-			[](UnitTest::Examiner & examiner) {
-				Statistics statistics;
-				std::stringstream buffer;
-
-				Examiner test_examiner(&statistics, buffer);
-				
-				test_examiner << "(A) This text should be displayed" << std::endl;
-				test_examiner.check(false);
-				
-				test_examiner << "(B) This text should NOT be displayed" << std::endl;
-				test_examiner.check(true);
-
-				examiner << "The test examiner should have passed once." << std::endl;
-				examiner.expect(statistics.passed()).to(be == 1);
-
-				examiner << "The test examiner should have failed once." << std::endl;
-				examiner.expect(statistics.failed()).to(be == 1);
-
-				auto output_string = buffer.str();
-
-				examiner << "The test examiner should have printed out the (A) message" << std::endl;
-				examiner.expect(output_string).to(include("(A)"));
-
-				examiner << "The test examiner shouldn't have printed out the (B) message" << std::endl;
-				examiner.expect(output_string).to_not(include("(B)"));
-			}
-		},
 	};
 }

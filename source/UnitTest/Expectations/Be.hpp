@@ -8,23 +8,34 @@
 
 #pragma once
 
-#include "../Expect.hpp"
+#include "../Assertions.hpp"
+
+#include <Streams/Safe.hpp>
 
 namespace UnitTest
 {
 	namespace Expectations
 	{
-		template <typename RightT>
-		struct BeNot
-		{
-			const RightT & right;
-			
-			template <typename ValueT>
-			bool operator()(To<ValueT> & to) const
-			{
-				return right(to.invert());
-			}
-		};
+		// In theory this could work, but in practice it's messy due to opeartor precedence.
+		// template <typename RightT>
+		// struct BeNot
+		// {
+		// 	const RightT & right;
+		// 	
+		// 	template <typename ValueT>
+		// 	bool operator()(const ValueT & value, Assertions & assertions) const
+		// 	{
+		// 		return assertions.refute([&value, this](Assertions & assertions){
+		// 			right(value, assertions);
+		// 		});
+		// 	}
+		// };
+		// 
+		// template <typename RightT>
+		// BeNot<RightT> be_not(const RightT & right)
+		// {
+		// 	return {right};
+		// }
 		
 		template <typename LeftT, typename RightT>
 		struct BeAnd
@@ -33,9 +44,9 @@ namespace UnitTest
 			const RightT & right;
 			
 			template <typename ValueT>
-			bool operator()(To<ValueT> & to) const
+			bool operator()(const ValueT & value, Assertions & assertions) const
 			{
-				return left(to) && right(to);
+				return left(value, assertions) && right(value, assertions);
 			}
 			
 			friend std::ostream & operator<<(std::ostream & output, const BeAnd & condition)
@@ -57,9 +68,9 @@ namespace UnitTest
 			const RightT & right;
 			
 			template <typename ValueT>
-			bool operator()(To<ValueT> & to) const
+			bool operator()(const ValueT & value, Assertions & assertions) const
 			{
-				return left(to) || right(to);
+				return left(value, assertions) || right(value, assertions);
 			}
 			
 			friend std::ostream & operator<<(std::ostream & output, const BeOr & condition)
@@ -80,10 +91,10 @@ namespace UnitTest
 			const ExpectedValueT & expected_value;
 			
 			template <typename ValueT>
-			bool operator()(To<ValueT> & to) const
+			bool operator()(const ValueT & value, Assertions & assertions) const
 			{
-				return to.check(to.value == expected_value, *this);
-				return to.check(to.value == expected_value, *this);
+				// std::cerr << *this << ": " << (value == expected_value) << std::endl;
+				return assertions.assert(value == expected_value, *this);
 			}
 			
 			template <typename RightT>
@@ -110,9 +121,9 @@ namespace UnitTest
 			const ExpectedValueT & expected_value;
 			
 			template <typename ValueT>
-			bool operator()(To<ValueT> & to) const
+			bool operator()(const ValueT & value, Assertions & assertions) const
 			{
-				return to.check(to.value != expected_value, *this);
+				return assertions.assert(value != expected_value, *this);
 			}
 			
 			template <typename RightT>
@@ -139,9 +150,9 @@ namespace UnitTest
 			const ExpectedValueT & expected_value;
 			
 			template <typename ValueT>
-			bool operator()(To<ValueT> & to) const
+			bool operator()(const ValueT & value, Assertions & assertions) const
 			{
-				return to.check(to.value < expected_value, *this);
+				return assertions.assert(value < expected_value, *this);
 			}
 			
 			template <typename RightT>
@@ -168,9 +179,9 @@ namespace UnitTest
 			const ExpectedValueT & expected_value;
 			
 			template <typename ValueT>
-			bool operator()(To<ValueT> & to) const
+			bool operator()(const ValueT & value, Assertions & assertions) const
 			{
-				return to.check(to.value <= expected_value, *this);
+				return assertions.assert(value <= expected_value, *this);
 			}
 			
 			template <typename RightT>
@@ -197,9 +208,9 @@ namespace UnitTest
 			const ExpectedValueT & expected_value;
 			
 			template <typename ValueT>
-			bool operator()(To<ValueT> & to) const
+			bool operator()(const ValueT & value, Assertions & assertions) const
 			{
-				return to.check(to.value > expected_value, *this);
+				return assertions.assert(value > expected_value, *this);
 			}
 			
 			template <typename RightT>
@@ -226,9 +237,9 @@ namespace UnitTest
 			const ExpectedValueT & expected_value;
 			
 			template <typename ValueT>
-			bool operator()(To<ValueT> & to) const
+			bool operator()(const ValueT & value, Assertions & assertions) const
 			{
-				return to.check(to.value >= expected_value, *this);
+				return assertions.assert(value >= expected_value, *this);
 			}
 			
 			template <typename RightT>
@@ -290,20 +301,4 @@ namespace UnitTest
 		
 		extern Be be;
 	}
-	
-#define UNITTEST_OPERATOR(op) \
-	template <typename ValueT, typename OtherT> \
-	bool operator op(const Expect<ValueT> & expect, const OtherT & other) \
-	{ \
-		return expect.to(Expectations::be op other); \
-	}
-	
-	UNITTEST_OPERATOR(==)
-	UNITTEST_OPERATOR(!=)
-	UNITTEST_OPERATOR(<)
-	UNITTEST_OPERATOR(<=)
-	UNITTEST_OPERATOR(>=)
-	UNITTEST_OPERATOR(>)
-	
-#undef UNITTEST_OPERATOR
 }

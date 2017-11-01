@@ -18,9 +18,9 @@ namespace UnitTest
 			const ExpectedValueT & expected_value;
 			
 			template <typename ValueT>
-			bool operator()(To<ValueT> & to)
+			bool operator()(const ValueT & value, Assertions & assertions)
 			{
-				return to.check(to.value.equivalent(expected_value), *this);
+				return assertions.assert(value.equivalent(expected_value), *this);
 			}
 			
 			friend std::ostream & operator<<(std::ostream & output, const BeEquivalent & condition)

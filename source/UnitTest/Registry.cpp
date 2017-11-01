@@ -16,18 +16,19 @@ namespace UnitTest
 		_suites.push_back(suite);
 	}
 	
-	Statistics Registry::perform_tests(Names filter)
+	Assertions Registry::perform_tests(Names filter)
 	{
 		// Enable color output:
 		Streams::TTY tty(std::cerr, Streams::terminal_type(std::cerr));
-		
 		Assertions overall(std::cerr);
 		
 		for (auto suite : _suites) {
 			if (filter.empty() || filter.find(suite->name()) != filter.end()) {
-				overall.assert(suite);
+				overall.assert(*suite);
 			}
 		}
+		
+		std::cerr << "Summary: " << overall << std::endl;
 		
 		return overall;
 	}

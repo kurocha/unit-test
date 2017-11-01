@@ -15,7 +15,7 @@ namespace UnitTest
 		struct BeOrdered
 		{
 			template <typename ValueT>
-			void operator()(To<ValueT> & to)
+			void operator()(const ValueT & value, Assertions & assertions)
 			{
 				auto current = std::begin(value);
 				auto end = std::end(value);
@@ -24,7 +24,7 @@ namespace UnitTest
 				current++;
 				
 				while (current != end) {
-					examiner.expect(previous).to(be <= current);
+					assertions.assert(previous <= current);
 				}
 			}
 		};

@@ -19,9 +19,9 @@ namespace UnitTest
 			bool expected_value;
 			
 			template <typename ValueT>
-			void operator()(To<ValueT> & to)
+			void operator()(const ValueT & value, Assertions & assertions) const
 			{
-				to.check(static_cast<bool>(to.value) == expected_value, *this);
+				assertions.assert(static_cast<bool>(value) == expected_value, *this);
 			}
 			
 			friend std::ostream & operator<<(std::ostream & output, const BeLogically & condition);

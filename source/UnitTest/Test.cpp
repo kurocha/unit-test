@@ -12,8 +12,4 @@ namespace UnitTest
 {
 	Test::Test(std::string name, TestFunctionT function) : _name(name), _function(function) {
 	}
-
-	void Test::invoke(Examiner & examiner) {
-		_function(examiner);
-	}
 }

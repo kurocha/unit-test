@@ -47,9 +47,9 @@ int main (int argc, char** argv)
 	// 	signal(SIGSEGV, UnitTest::segmentation_fault);
 	// }
 	
-	UnitTest::Statistics statistics = UnitTest::shared_registry()->perform_tests(filter);
+	auto results = UnitTest::shared_registry()->perform_tests(filter);
 	
-	if (statistics.failed()) {
+	if (!results) {
 		return 1;
 	} else {
 		return 0;

@@ -43,21 +43,21 @@ namespace UnitTest
 			};
 			
 			template <typename ValueT>
-			void operator()(To<ValueT> & to)
+			void operator()(const ValueT & value, Assertions & assertions) const
 			{
 				std::size_t i = 0;
 				
-				for (const auto & item : to.value) {
-					if (!to.check(i < N, OutOfBounds{i, N})) {
+				for (const auto & item : value) {
+					if (!assertions.assert(i < N, OutOfBounds{i, N})) {
 						break;
 					}
 					
-					to.check(item == sequence[i], Offset{i, item});
+					assertions.assert(item == sequence[i], Offset{i, item});
 					
 					i++;
 				}
 				
-				to.check(i == N, OutOfBounds{i, N});
+				assertions.assert(i == N, OutOfBounds{i, N});
 			}
 			
 			friend std::ostream & operator<<(std::ostream & output, const BeSequence & condition)

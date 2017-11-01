@@ -24,7 +24,7 @@ namespace UnitTest
 		void add(Suite * suite);
 		
 		// If tests is not empty, it will be used to limit tests to 
-		Statistics perform_tests(Names names);
+		Assertions perform_tests(Names names);
 	};
 	
 	/// The global registry object.

@@ -8,7 +8,8 @@
 
 #pragma once
 
-#include "Examiner.hpp"
+#include "Assertions.hpp"
+#include "Expectations/Be.hpp"
 
 #include <iostream>
 
@@ -18,79 +19,50 @@
 
 namespace UnitTest
 {
-	class Examiner;
-	
-	template <typename ParentT, typename ValueT>
+	template <typename ValueT>
 	struct Expect;
 	
-	template <typename ParentT, typename ValueT>
+	template <typename FunctionT, typename ValueT>
 	struct To
 	{
 		// It will always be of type Expect<...>
-		ParentT & parent;
+		FunctionT function;
 		const ValueT & value;
 		
-		template <typename FunctionT>
-		bool check(bool condition, FunctionT function)
+		void operator()(Assertions & assertions) const
 		{
-			if (condition) {
-				parent.pass();
-			} else {
-				parent.fail();
-			}
-			
-			parent.check(condition == true, *this)
-			
-			assertions.assert(condition) << "Expected " << Streams::safe(value) << " to be " << function;
-			
-			return condition;
+			function(value, assertions);
 		}
 		
-		explicit operator bool() const noexcept
+		friend std::ostream & operator<<(std::ostream & output, const To & to)
 		{
-			return assertions;
-		}
-		
-		template <typename NestedValueT>
-		auto expect(const NestedValueT & value) const noexcept
-		{
-			return make_expect(*this, value);
-		}
-		
-	private:
-		template <typename ParentT, typename NestedValueT>
-		auto make_expect(ParentT & parent, const NestedValueT & value) const noexcept {
-			return Expect<ParentT, NestedValueT>{*this, value, parent.depth + 1};
+			return output << "Expected " << Streams::safe(to.value) << " to " << to.function;
 		}
 	};
 	
-	template <typename ParentT, typename ValueT>
+	template <typename ValueT>
 	struct Expect
 	{
-		// It can be either Examiner or To<...>
-		ParentT & parent;
-		const ValueT & value;
 		Assertions & assertions;
-		
-		std::size_t depth = 0;
+		const ValueT & value;
 		
 		template <typename FunctionT>
 		void to(FunctionT function) const
 		{
-			to(true, function, value);
+			to(false, function, value);
 		}
 		
 		template <typename FunctionT>
 		void to_not(FunctionT function) const
 		{
-			to(false, function, value);
+			to(true, function, value);
 		}
 		
 		template <typename FunctionT>
 		void to_each(FunctionT function) const
 		{
 			for (const auto & item : value) {
-				to(true, function, item);
+				to(false, function, item);
 			}
 		}
 		
@@ -98,28 +70,38 @@ namespace UnitTest
 		void to_each_not(FunctionT function) const
 		{
 			for (const auto & item : value) {
-				to(false, function, item);
+				to(true, function, item);
 			}
 		}
+		
+		template <typename OtherT>
+		void operator==(const OtherT & other) {to(Expectations::be == other);}
+		
+		template <typename OtherT>
+		void operator!=(const OtherT & other) {to(Expectations::be != other);}
+		
+		template <typename OtherT>
+		void operator<(const OtherT & other) {to(Expectations::be < other);}
+		
+		template <typename OtherT>
+		void operator<=(const OtherT & other) {to(Expectations::be <= other);}
+		
+		template <typename OtherT>
+		void operator>(const OtherT & other) {to(Expectations::be > other);}
+		
+		template <typename OtherT>
+		void operator>=(const OtherT & other) {to(Expectations::be >= other);}
 		
 	private:
-		template <typename ParentT, typename NestedValueT>
-		auto make_to(ParentT & parent, const NestedValueT & value) const noexcept {
-			return To<ParentT, NestedValueT>{*this, value};
-		}
-		
 		template <typename FunctionT, typename NestedValueT>
-		To<ValueT> to(bool expected, FunctionT function, const NestedValueT & nested_value) const noexcept
+		void to(bool inverted, FunctionT function, const NestedValueT & nested_value) const noexcept
 		{
-			auto to = make_to(*this, nested_value);
+			To<FunctionT, NestedValueT> to{function, nested_value};
 			
-			function(to);
-			
-			if (expected) {
-				parent.check(to, to.assertions);
-			} else {
-				parent.check(!to, to.assertions);
-			}
+			if (inverted)
+				assertions.refute(to);
+			else
+				assertions.assert(to);
 		}
 	};
 }

@@ -9,9 +9,9 @@ namespace UnitTest
 	using namespace UnitTest::Expectations;
 	
 	UnitTest::Suite ExpectTestSuite {
-		"UnitTest::Expectation",
+		"UnitTest::Expect",
 		
-		{"it should report expectations using to",
+		{"it can assert expecations",
 			[](UnitTest::Examiner & examiner) {
 				examiner.expect(10).to(be == 10);
 				examiner.expect(10).to(be < 20);
@@ -26,7 +26,7 @@ namespace UnitTest
 			}
 		},
 		
-		{"it should report expectations using to_not",
+		{"it can refute expectations",
 			[](UnitTest::Examiner & examiner) {
 				examiner.expect(10).to_not(be == 20);
 				examiner.expect(10).to_not(be > 20);
@@ -63,11 +63,11 @@ namespace UnitTest
 		
 		{"it can compare sequences",
 			[](auto & examiner) {
-				examiner.expect(sequence(1, 2, 3, 4)).to(be_sequence(1, 2, 3, 4));
+				examiner.expect(sequence(1, 2, 3, 4)).to(be_sequence(1, 2, 3, 4, 5));
 				
 				examiner.expect(sequence(1, 2, 3, 4)).to_not(be_sequence(1, 1, 1, 1));
-				// examiner.expect(sequence(1, 2, 3, 4)).to_not(be_sequence(1, 2, 3));
-				// examiner.expect(sequence(1, 2, 3, 4)).to_not(be_sequence(1, 2, 3, 4, 5));
+				examiner.expect(sequence(1, 2, 3, 4)).to_not(be_sequence(1, 2, 3));
+				examiner.expect(sequence(1, 2, 3, 4)).to_not(be_sequence(1, 2, 3, 4, 5));
 			}
 		}
 	};
