@@ -14,7 +14,7 @@ namespace UnitTest
 	{
 		std::ostream & operator<<(std::ostream & output, const BeLogically & condition)
 		{
-			return output << "be logically " << Streams::safe(condition.expected_value);
+			return output << "be logically " << Format::variable(condition.expected_value);
 		}
 		
 		BeLogically be_true = {true};

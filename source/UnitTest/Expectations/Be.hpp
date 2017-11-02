@@ -111,7 +111,7 @@ namespace UnitTest
 			
 			friend std::ostream & operator<<(std::ostream & output, const BeEqual & condition)
 			{
-				return output << "be == " << Streams::safe(condition.expected_value);
+				return output << "be == " << Format::variable(condition.expected_value);
 			}
 		};
 		
@@ -140,7 +140,7 @@ namespace UnitTest
 			
 			friend std::ostream & operator<<(std::ostream & output, const BeNotEqual & condition)
 			{
-				return output << "be != " << Streams::safe(condition.expected_value);
+				return output << "be != " << Format::variable(condition.expected_value);
 			}
 		};
 		
@@ -169,7 +169,7 @@ namespace UnitTest
 			
 			friend std::ostream & operator<<(std::ostream & output, const BeLessThan & condition)
 			{
-				return output << "be < " << Streams::safe(condition.expected_value);
+				return output << "be < " << Format::variable(condition.expected_value);
 			}
 		};
 		
@@ -198,7 +198,7 @@ namespace UnitTest
 			
 			friend std::ostream & operator<<(std::ostream & output, const BeLessThanOrEqual & condition)
 			{
-				return output << "be <= " << Streams::safe(condition.expected_value);
+				return output << "be <= " << Format::variable(condition.expected_value);
 			}
 		};
 		
@@ -227,7 +227,7 @@ namespace UnitTest
 			
 			friend std::ostream & operator<<(std::ostream & output, const BeGreaterThan & condition)
 			{
-				return output << "be > " << Streams::safe(condition.expected_value);
+				return output << "be > " << Format::variable(condition.expected_value);
 			}
 		};
 		
@@ -256,7 +256,7 @@ namespace UnitTest
 			
 			friend std::ostream & operator<<(std::ostream & output, const BeGreaterThanOrEqual & condition)
 			{
-				return output << "be >= " << Streams::safe(condition.expected_value);
+				return output << "be >= " << Format::variable(condition.expected_value);
 			}
 		};
 		

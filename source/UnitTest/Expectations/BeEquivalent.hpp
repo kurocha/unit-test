@@ -25,7 +25,7 @@ namespace UnitTest
 			
 			friend std::ostream & operator<<(std::ostream & output, const BeEquivalent & condition)
 			{
-				return output << "be equivalent to " << Streams::safe(condition.expected_value);
+				return output << "be equivalent to " << Format::variable(condition.expected_value);
 			}
 		};
 		

@@ -37,7 +37,7 @@ namespace UnitTest
 			
 			friend std::ostream & operator<<(std::ostream & output, const Include & condition)
 			{
-				return output << "include " << Streams::safe(condition.needle);
+				return output << "include " << Format::variable(condition.needle);
 			}
 		};
 		

@@ -27,7 +27,7 @@ namespace UnitTest
 				
 				friend std::ostream & operator<<(std::ostream & output, const Offset & offset)
 				{
-					return output << "have value " << Streams::safe(offset.value) << " at index " << offset.index;
+					return output << "have value " << Format::variable(offset.value) << " at index " << offset.index;
 				}
 			};
 			
@@ -38,7 +38,7 @@ namespace UnitTest
 				
 				friend std::ostream & operator<<(std::ostream & output, const OutOfBounds & out_of_bounds)
 				{
-					return output << "have " << out_of_bounds.size << " items but got " << out_of_bounds.index;
+					return output << "have " << Format::variable(out_of_bounds.size) << " items but got " << Format::variable(out_of_bounds.index);
 				}
 			};
 			
@@ -62,7 +62,7 @@ namespace UnitTest
 			
 			friend std::ostream & operator<<(std::ostream & output, const BeSequence & condition)
 			{
-				return output << "be sequence " << Streams::safe(condition.sequence);
+				return output << "be sequence " << Format::variable(condition.sequence);
 			}
 		};
 		

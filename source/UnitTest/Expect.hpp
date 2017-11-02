@@ -13,9 +13,7 @@
 
 #include <iostream>
 
-#include <Streams/Safe.hpp>
-#include <Streams/Tuple.hpp>
-#include <Streams/Container.hpp>
+#include "Format.hpp"
 
 namespace UnitTest
 {
@@ -28,6 +26,7 @@ namespace UnitTest
 		// It will always be of type Expect<...>
 		FunctionT function;
 		const ValueT & value;
+		bool inverted;
 		
 		void operator()(Assertions & assertions) const
 		{
@@ -36,7 +35,7 @@ namespace UnitTest
 		
 		friend std::ostream & operator<<(std::ostream & output, const To & to)
 		{
-			return output << "Expected " << Streams::safe(to.value) << " to " << to.function;
+			return output << "Expected " << Format::variable(to.value) << (to.inverted ? " to not " : " to ") << to.function;
 		}
 	};
 	
@@ -96,7 +95,7 @@ namespace UnitTest
 		template <typename FunctionT, typename NestedValueT>
 		void to(bool inverted, FunctionT function, const NestedValueT & nested_value) const noexcept
 		{
-			To<FunctionT, NestedValueT> to{function, nested_value};
+			To<FunctionT, NestedValueT> to{function, nested_value, inverted};
 			
 			if (inverted)
 				assertions.refute(to);

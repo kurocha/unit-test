@@ -10,13 +10,8 @@
 
 #include "Registry.hpp"
 
-#include <Streams/Color.hpp>
-
 namespace UnitTest
 {
-	static Streams::Color
-		name_style(Streams::Color::WHITE, Streams::Color::UNSPECIFIED, Streams::Color::UNDERLINE),
-		reset_style(-1, -1, Streams::Color::NORMAL);
 	
 	Suite::Suite(std::initializer_list<Entry> entries)
 	{
@@ -34,7 +29,7 @@ namespace UnitTest
 	{
 		for (auto test : _tests) {
 			try {
-				assertions.assert(test);
+				assertions.assert(test, true);
 			} catch (...) {
 				assertions.assert(false, "Test failed with unhandled exception");
 			}
@@ -43,6 +38,6 @@ namespace UnitTest
 	
 	std::ostream & operator<<(std::ostream & output, const Suite & suite)
 	{
-		return output << "Test Suite " << name_style << Streams::safe(suite.name()) << reset_style;
+		return output << suite.name();
 	}
 }

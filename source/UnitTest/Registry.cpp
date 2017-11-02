@@ -8,7 +8,7 @@
 
 #include "Registry.hpp"
 
-#include <Streams/Terminal.hpp>
+#include "Format.hpp"
 
 namespace UnitTest
 {
@@ -24,11 +24,11 @@ namespace UnitTest
 		
 		for (auto suite : _suites) {
 			if (filter.empty() || filter.find(suite->name()) != filter.end()) {
-				overall.assert(*suite);
+				overall.assert(*suite, true);
 			}
 		}
 		
-		std::cerr << "Summary: " << overall << std::endl;
+		std::cerr << overall << std::endl;
 		
 		return overall;
 	}

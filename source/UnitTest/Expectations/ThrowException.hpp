@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "../Format.hpp"
+
 #include <typeinfo>
 
 namespace UnitTest
@@ -54,7 +56,7 @@ namespace UnitTest
 			
 			friend std::ostream & operator<<(std::ostream & output, const ThrowException &)
 			{
-				return output << "throw exception " << Streams::safe(typeid(ExceptionT));
+				return output << "throw exception " << Format::variable(typeid(ExceptionT));
 			}
 		};
 		

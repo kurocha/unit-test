@@ -11,15 +11,27 @@
 #include <iostream>
 #include <sstream>
 
-#include <Streams/Terminal.hpp>
-#include <Streams/Color.hpp>
+#include "Format.hpp"
 
 namespace UnitTest
 {
-	extern const Streams::Color PASSED_STYLE, FAILED_STYLE, RESET_STYLE;
-	
 	class Assertions
 	{
+		std::string indent() const
+		{
+			return std::string(_level, '\t');
+		}
+		
+		auto pass_prefix() const
+		{
+			return Format::PASSED("✓ ");
+		}
+		
+		auto fail_prefix() const
+		{
+			return Format::FAILED("✗ ");
+		}
+		
 	public:
 		Assertions(std::ostream & output, std::size_t level = 0, bool inverted = false);
 		
@@ -32,31 +44,31 @@ namespace UnitTest
 		explicit operator bool() const noexcept;
 		
 		template <typename FunctionT>
-		bool assert(FunctionT function)
+		bool assert(FunctionT function, bool verbose = false)
 		{
 			std::stringstream buffer;
 			Streams::TTY tty(buffer, _output);
-			
 			Assertions nested{buffer, _level+1, false};
 			
 			function(nested);
 			
 			_count += nested._count;
 			
-			return assert(!!nested, function, buffer);
+			return assert(nested, function, buffer, verbose);
 		}
 		
 		template <typename FunctionT>
-		bool refute(FunctionT function)
+		bool refute(FunctionT function, bool verbose = false)
 		{
 			std::stringstream buffer;
+			Streams::TTY tty(buffer, _output);
 			Assertions nested{buffer, _level+1, true};
 			
 			function(nested);
 			
 			_count += nested._count;
 			
-			return assert(!!nested, function, buffer);
+			return assert(nested, function, buffer, verbose);
 		}
 		
 		friend std::ostream & operator<<(std::ostream & output, const Assertions & assertions);
@@ -68,13 +80,13 @@ namespace UnitTest
 				_passed += 1;
 				
 				if (_inverted) {
-					_output << indent() << PASSED_STYLE << "✓ " << RESET_STYLE << function << std::endl;
+					_output << indent() << pass_prefix() << function << std::endl;
 				}
 			} else {
 				_failed += 1;
 				
 				if (!_inverted) {
-					_output << indent() << FAILED_STYLE << "✗ " << RESET_STYLE << function << std::endl;
+					_output << indent() << fail_prefix() << function << std::endl;
 				}
 			}
 			
@@ -83,40 +95,53 @@ namespace UnitTest
 		
 	private:
 		template <typename FunctionT>
-		bool assert(bool condition, FunctionT function, const std::stringstream & buffer)
+		bool assert(Assertions & nested, FunctionT function, const std::stringstream & buffer, bool verbose)
 		{
 			_count += 1;
 			
-			if (condition) {
+			if (nested) {
 				_passed += 1;
 				
 				if (_inverted) {
-					_output << indent() << function;
+					_output << indent() << fail_prefix() << function;
+					
+					if (verbose)
+						_output << ": " << nested << std::endl;
+					else
+						_output << std::endl;
 					
 					if (buffer) {
-						_output << " failed because:" << std::endl;
 						_output << buffer.rdbuf();
 					}
+				} else if (verbose) {
+					_output << indent() << pass_prefix() << function << ": " << nested << std::endl;
+					
+					if (buffer) _output << buffer.str();
 				}
+				
+				return true;
 			} else {
 				_failed += 1;
 				
 				if (!_inverted) {
-					_output << indent() << function;
+					_output << indent() << fail_prefix() << function;
+					
+					if (verbose)
+						_output << ": " << nested << std::endl;
+					else
+						_output << std::endl;
 					
 					if (buffer) {
-						_output << " failed because:" << std::endl;
 						_output << buffer.rdbuf();
 					}
+				} else if (verbose) {
+					_output << indent() << pass_prefix() << function << ": " << nested << std::endl;
+					
+					if (buffer) _output << buffer.str();
 				}
+				
+				return false;
 			}
-			
-			return condition;
-		}
-		
-		std::string indent() const
-		{
-			return std::string(_level, '\t');
 		}
 		
 		std::ostream & _output;
