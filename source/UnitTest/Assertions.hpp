@@ -44,7 +44,7 @@ namespace UnitTest
 		explicit operator bool() const noexcept;
 		
 		template <typename FunctionT>
-		bool assert(FunctionT function, bool verbose = false)
+		bool assert(FunctionT && function, bool verbose = false)
 		{
 			std::stringstream buffer;
 			Streams::TTY tty(buffer, _output);
@@ -58,7 +58,7 @@ namespace UnitTest
 		}
 		
 		template <typename FunctionT>
-		bool refute(FunctionT function, bool verbose = false)
+		bool refute(FunctionT && function, bool verbose = false)
 		{
 			std::stringstream buffer;
 			Streams::TTY tty(buffer, _output);
@@ -74,7 +74,7 @@ namespace UnitTest
 		friend std::ostream & operator<<(std::ostream & output, const Assertions & assertions);
 		
 		template <typename FunctionT>
-		bool assert(bool condition, FunctionT function)
+		bool assert(bool condition, FunctionT && function)
 		{
 			if (condition) {
 				_passed += 1;
@@ -95,7 +95,7 @@ namespace UnitTest
 		
 	private:
 		template <typename FunctionT>
-		bool assert(Assertions & nested, FunctionT function, const std::stringstream & buffer, bool verbose)
+		bool assert(Assertions & nested, FunctionT & function, const std::stringstream & buffer, bool verbose)
 		{
 			_count += 1;
 			

@@ -28,7 +28,7 @@ namespace UnitTest
 		Examiner(Assertions & assertions) : _assertions(assertions) {};
 		
 		template <typename ValueT>
-		Expect<ValueT> expect(const ValueT & value) {
+		Expect<ValueT> expect(ValueT && value) {
 			return {_assertions, value};
 		}
 		

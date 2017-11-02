@@ -23,9 +23,9 @@ namespace UnitTest
 	template <typename FunctionT, typename ValueT>
 	struct To
 	{
-		// It will always be of type Expect<...>
-		FunctionT function;
-		const ValueT & value;
+		const FunctionT function;
+		const ValueT value;
+		
 		bool inverted;
 		
 		void operator()(Assertions & assertions) const
@@ -43,33 +43,33 @@ namespace UnitTest
 	struct Expect
 	{
 		Assertions & assertions;
-		const ValueT & value;
+		const ValueT value;
 		
 		template <typename FunctionT>
-		void to(FunctionT function) const
+		void to(FunctionT && function) const
 		{
-			to(false, function, value);
+			to(false, std::forward<FunctionT>(function), value);
 		}
 		
 		template <typename FunctionT>
-		void to_not(FunctionT function) const
+		void to_not(FunctionT && function) const
 		{
-			to(true, function, value);
+			to(true, std::forward<FunctionT>(function), value);
 		}
 		
 		template <typename FunctionT>
-		void to_each(FunctionT function) const
+		void to_each(FunctionT && function) const
 		{
 			for (const auto & item : value) {
-				to(false, function, item);
+				to(false, std::forward<FunctionT>(function), item);
 			}
 		}
 		
 		template <typename FunctionT>
-		void to_each_not(FunctionT function) const
+		void to_each_not(FunctionT && function) const
 		{
 			for (const auto & item : value) {
-				to(true, function, item);
+				to(true, std::forward<FunctionT>(function), item);
 			}
 		}
 		
@@ -93,7 +93,7 @@ namespace UnitTest
 		
 	private:
 		template <typename FunctionT, typename NestedValueT>
-		void to(bool inverted, FunctionT function, const NestedValueT & nested_value) const noexcept
+		void to(bool inverted, FunctionT && function, NestedValueT && nested_value) const noexcept
 		{
 			To<FunctionT, NestedValueT> to{function, nested_value, inverted};
 			

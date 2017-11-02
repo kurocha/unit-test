@@ -25,9 +25,9 @@ namespace UnitTest
 		extern const Streams::Color SUITE, TEST, VARIABLE, PASSED, FAILED, RESET;
 		
 		template <typename ValueT>
-		auto variable(const ValueT & value)
+		auto variable(ValueT && value)
 		{
-			return VARIABLE(Streams::safe(value));
+			return VARIABLE(Streams::safe(std::forward<ValueT>(value)));
 		}
 	}
 }
