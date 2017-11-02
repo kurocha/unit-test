@@ -16,15 +16,15 @@ namespace UnitTest
 		_suites.push_back(suite);
 	}
 	
-	Assertions Registry::perform_tests(Names filter)
+	Assertions Registry::perform_tests(const Names & names, bool verbose)
 	{
 		// Enable color output:
 		Streams::TTY tty(std::cerr, Streams::terminal_type(std::cerr));
 		Assertions overall(std::cerr);
 		
 		for (auto suite : _suites) {
-			if (filter.empty() || filter.find(suite->name()) != filter.end()) {
-				overall.assert(*suite, true);
+			if (names.empty() || names.find(suite->name()) != names.end()) {
+				overall.assert(*suite, verbose);
 			}
 		}
 		

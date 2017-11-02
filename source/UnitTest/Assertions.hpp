@@ -33,11 +33,14 @@ namespace UnitTest
 		}
 		
 	public:
-		Assertions(std::ostream & output, std::size_t level = 0, bool inverted = false);
+		Assertions(std::ostream & output, std::size_t level = 0, bool inverted = false, bool verbose = false);
 		
 		std::size_t passed() const noexcept {return _passed;}
 		std::size_t failed() const noexcept {return _failed;}
 		std::size_t total() const noexcept {return _passed + _failed;}
+		
+		bool inverted() const noexcept {return _inverted;}
+		bool verbose() const noexcept {return _verbose;}
 		
 		std::ostream & output() const noexcept {return _output;}
 		
@@ -48,7 +51,7 @@ namespace UnitTest
 		{
 			std::stringstream buffer;
 			Streams::TTY tty(buffer, _output);
-			Assertions nested{buffer, _level+1, false};
+			Assertions nested{buffer, _level+1, false, verbose};
 			
 			function(nested);
 			
@@ -62,7 +65,7 @@ namespace UnitTest
 		{
 			std::stringstream buffer;
 			Streams::TTY tty(buffer, _output);
-			Assertions nested{buffer, _level+1, true};
+			Assertions nested{buffer, _level+1, true, verbose};
 			
 			function(nested);
 			
@@ -144,10 +147,22 @@ namespace UnitTest
 			}
 		}
 		
+		// The output stream/buffer.
 		std::ostream & _output;
+		
+		// The indentation level for output.
 		std::size_t _level = 0;
+		
+		// By default, success is all tests pass. If inverted, success is at least one test fails, or there were no tests.
 		bool _inverted = false;
 		
-		std::size_t _passed = 0, _failed = 0, _count = 0;
+		// We capture this so that `function(nested)` can know whether it's verbose or not.
+		bool _verbose = false;
+		
+		// Statistics relating to the current set of assertions.
+		std::size_t _passed = 0, _failed = 0;
+		
+		// The total number of assertions, including nested assertions.
+		std::size_t _count = 0;
 	};
 }

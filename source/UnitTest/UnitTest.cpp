@@ -35,9 +35,14 @@ static void change_directory(std::string file_path)
 int main (int argc, char** argv)
 {
 	UnitTest::Names filter;
+	bool verbose = true;
 	
 	for (int i = 1; i < argc; i += 1) {
-		filter.insert(argv[i]);
+		if (std::string(argv[i]) == "--quiet") {
+			verbose = false;
+		} else {
+			filter.insert(argv[i]);
+		}
 	}
 	
 	// Change the working directory so that unit tests can expect some consistency if/when loading external resources:
@@ -47,7 +52,7 @@ int main (int argc, char** argv)
 	// 	signal(SIGSEGV, UnitTest::segmentation_fault);
 	// }
 	
-	auto results = UnitTest::shared_registry()->perform_tests(filter);
+	auto results = UnitTest::shared_registry()->perform_tests(filter, verbose);
 	
 	if (!results) {
 		return 1;
