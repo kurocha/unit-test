@@ -17,23 +17,12 @@ namespace UnitTest
 {
 	class Assertions
 	{
-		std::string indent() const
-		{
-			return std::string(_level, '\t');
-		}
-		
-		auto pass_prefix() const
-		{
-			return Format::PASSED("✓ ");
-		}
-		
-		auto fail_prefix() const
-		{
-			return Format::FAILED("✗ ");
-		}
-		
 	public:
 		Assertions(std::ostream & output, std::size_t level = 0, bool inverted = false, bool verbose = false);
+		
+		std::string indent() const {return std::string(_level, '\t');}
+		auto pass_prefix() const {return Format::PASSED("✓ ");}
+		auto fail_prefix() const {return Format::FAILED("✗ ");}
 		
 		std::size_t passed() const noexcept {return _passed;}
 		std::size_t failed() const noexcept {return _failed;}

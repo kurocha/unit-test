@@ -15,10 +15,10 @@ namespace UnitTest
 		template <typename ExpectedValueT>
 		struct BeEquivalent
 		{
-			const ExpectedValueT & expected_value;
+			const ExpectedValueT expected_value;
 			
 			template <typename ValueT>
-			bool operator()(const ValueT & value, Assertions & assertions)
+			bool operator()(const ValueT & value, Assertions & assertions) const
 			{
 				return assertions.assert(value.equivalent(expected_value), *this);
 			}
@@ -30,7 +30,7 @@ namespace UnitTest
 		};
 		
 		template <typename ValueT>
-		BeEquivalent<ValueT> be_equivalent(const ValueT & value)
+		BeEquivalent<ValueT> be_equivalent(ValueT && value)
 		{
 			return {value};
 		}

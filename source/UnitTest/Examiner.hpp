@@ -46,7 +46,7 @@ namespace UnitTest
 		template <typename ValueT>
 		std::ostream & operator<< (ValueT && value)
 		{
-			return _assertions.output() << value;
+			return _assertions.output() << _assertions.indent() << value;
 		}
 	};
 }
