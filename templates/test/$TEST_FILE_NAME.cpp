@@ -11,6 +11,8 @@
 #include <$TEST_SOURCE_HEADER>
 
 <NAMESPACE>
+using namespace UnitTest::Expectations;
+
 UnitTest::Suite $TEST_SUITE_NAME {
 	"$TEST_SUITE_DESCRIPTION",
 	
