@@ -13,6 +13,8 @@
 
 #include "Format.hpp"
 
+#undef assert
+
 namespace UnitTest
 {
 	class Assertions
