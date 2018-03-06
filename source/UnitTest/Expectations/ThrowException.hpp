@@ -10,6 +10,8 @@
 
 #include "../Format.hpp"
 
+#include <Streams/Callable.hpp>
+
 #include <typeinfo>
 
 namespace UnitTest
