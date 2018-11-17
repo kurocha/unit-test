@@ -10,6 +10,7 @@
 
 #include "Assertions.hpp"
 #include "Expectations/Be.hpp"
+#include "Expectations/ThrowException.hpp"
 
 #include <iostream>
 
@@ -90,6 +91,9 @@ namespace UnitTest
 		
 		template <typename OtherT>
 		void operator>=(const OtherT & other) {to(Expectations::be >= other);}
+		
+		template <typename ExceptionT, typename ...ArgumentsT>
+		void to_throw(ArgumentsT ...arguments) {to(Expectations::throw_exception<ExceptionT>(arguments...));}
 		
 	private:
 		template <typename FunctionT, typename NestedValueT>
