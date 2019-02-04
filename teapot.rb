@@ -42,14 +42,14 @@ define_target 'unit-test-library' do |target|
 		]
 		
 		append buildflags [
-			"-I", ->{source_root},
+			"-I", source_root,
 		]
 		
 		define Rule, "copy.unit-tests" do
 			input :test_assets
 			
-			parameter :prefix, implicit: true do |arguments|
-				environment[:install_prefix] + "test"
+			parameter :prefix, optional: true do |path, arguments|
+				arguments[:prefix] = environment[:build_prefix] + path
 			end
 			
 			apply do |parameters|
@@ -60,19 +60,21 @@ define_target 'unit-test-library' do |target|
 		define Rule, "run.unit-tests" do
 			input :source_files
 			
-			parameter :tests
+			parameter :prefix
 			parameter :arguments
 			
 			parameter :executable_file, implicit: true do |arguments|
-				environment[:install_prefix] + "test" + "#{arguments[:tests]}-tests"
+				environment[:install_prefix] + arguments[:prefix] + "bin/tests"
 			end
 			
 			apply do |parameters|
-				build executable: parameters[:tests],
+				build prefix: parameters[:prefix],
+					executable: "tests",
 					executable_file: parameters[:executable_file],
 					source_files: parameters[:source_files]
 				
-				run executable: parameters[:tests],
+				run prefix: parameters[:prefix],
+					executable: "tests",
 					executable_file: parameters[:executable_file],
 					arguments: parameters[:arguments]
 			end
@@ -82,7 +84,7 @@ end
 
 define_target "unit-test-tests" do |target|
 	target.build do |*arguments|
-		run tests: 'UnitTest', source_files: target.package.path.glob("test/UnitTest/**/*.cpp"), arguments: arguments
+		run prefix: target.name, source_files: target.package.path.glob("test/UnitTest/**/*.cpp"), arguments: arguments
 	end
 	
 	target.depends 'Library/UnitTest'
