@@ -3,7 +3,7 @@
 #  This file is part of the "Teapot" project, and is released under the MIT license.
 #
 
-required_version "2.0"
+required_version "3.0"
 
 # Project Metadata
 
@@ -21,14 +21,11 @@ end
 # Build Targets
 
 define_target 'unit-test-library' do |target|
+	source_root = target.package.path + 'source'
+	bin_root = target.package.path + 'bin'
+	
 	target.build do
-		source_root = target.package.path + 'source'
-		bin_root = target.package.path + 'bin'
-		
-		copy binaries: Files::Directory.new(bin_root)
-		copy headers: Files::Glob.new(source_root, 'UnitTest/**/*.{h,hpp}')
-		
-		build static_library: 'UnitTest', source_files: source_root.glob('UnitTest/**/*.cpp')
+		build prefix: target.name, static_library: 'UnitTest', source_files: source_root.glob('UnitTest/**/*.cpp')
 	end
 	
 	target.depends "Build/Files"
@@ -41,7 +38,11 @@ define_target 'unit-test-library' do |target|
 	
 	target.provides "Library/UnitTest" do
 		append linkflags [
-			->{install_prefix + 'lib/libUnitTest.a'},
+			->{build_prefix + target.name + 'UnitTest.a'},
+		]
+		
+		append buildflags [
+			"-I", ->{source_root},
 		]
 		
 		define Rule, "copy.unit-tests" do
