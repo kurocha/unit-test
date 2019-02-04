@@ -3,7 +3,7 @@
 #  This file is part of the "Teapot" project, and is released under the MIT license.
 #
 
-required_version "3.0"
+teapot_version "2.3"
 
 # Project Metadata
 
