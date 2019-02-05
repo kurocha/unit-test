@@ -41,8 +41,8 @@ define_target 'unit-test-library' do |target|
 			->{build_prefix + target.name + 'UnitTest.a'},
 		]
 		
-		append buildflags [
-			"-I", source_root,
+		append header_search_paths [
+			source_root
 		]
 		
 		define Rule, "copy.unit-tests" do
