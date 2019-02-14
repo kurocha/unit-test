@@ -96,8 +96,6 @@ define_target "unit-test-tests" do |target|
 	target.depends :platform
 	target.depends "Language/C++14", private: true
 	
-	target.depends "Library/UnitTest"
-	
 	target.provides "Test/UnitTest"
 end
 
