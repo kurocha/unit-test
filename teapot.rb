@@ -151,7 +151,6 @@ define_configuration "development" do |configuration|
 	
 	configuration.import "unit-test"
 	
-	configuration.require "platforms"
 	configuration.require "build-files"
 	
 	# Provides all the build related infrastructure:
@@ -161,7 +160,6 @@ define_configuration "development" do |configuration|
 	configuration.require 'generate-cpp-class'
 	configuration.require 'generate-project'
 	configuration.require 'generate-travis'
-
 end
 
 define_configuration "unit-test" do |configuration|
