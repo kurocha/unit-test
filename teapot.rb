@@ -3,7 +3,7 @@
 #  This file is part of the "Teapot" project, and is released under the MIT license.
 #
 
-teapot_version "2.3"
+teapot_version "3.0"
 
 # Project Metadata
 
@@ -21,36 +21,21 @@ end
 # Build Targets
 
 define_target 'unit-test-library' do |target|
-	source_root = target.package.path + 'source'
-	bin_root = target.package.path + 'bin'
+	target.depends "Library/Streams", public: true
 	
-	target.build do
-		build prefix: target.name, static_library: 'UnitTest', source_files: source_root.glob('UnitTest/**/*.cpp')
-	end
-	
-	target.depends "Build/Files"
-	target.depends "Build/Clang"
-	
-	target.depends "Library/Streams"
-	
-	target.depends :platform
-	target.depends "Language/C++14", private: true
+	target.depends :executor
+	target.depends "Language/C++14"
 	
 	target.provides "Library/UnitTest" do
-		append linkflags [
-			->{build_prefix + target.name + 'UnitTest.a'},
-		]
+		source_root = target.package.path + 'source'
 		
-		append header_search_paths [
-			source_root
-		]
+		library_path = build static_library: 'UnitTest', source_files: source_root.glob('UnitTest/**/*.cpp')
+		
+		append linkflags library_path
+		append header_search_paths source_root
 		
 		define Rule, "copy.unit-tests" do
 			input :test_assets
-			
-			parameter :prefix, optional: true do |path, arguments|
-				arguments[:prefix] = environment[:build_prefix] + path
-			end
 			
 			apply do |parameters|
 				copy source: parameters[:test_assets], prefix: parameters[:prefix]
@@ -60,7 +45,6 @@ define_target 'unit-test-library' do |target|
 		define Rule, "run.unit-tests" do
 			input :source_files
 			
-			parameter :prefix
 			parameter :arguments
 			
 			parameter :executable_file, implicit: true do |arguments|
@@ -68,13 +52,11 @@ define_target 'unit-test-library' do |target|
 			end
 			
 			apply do |parameters|
-				build prefix: parameters[:prefix],
-					executable: "tests",
+				build executable: "tests",
 					executable_file: parameters[:executable_file],
 					source_files: parameters[:source_files]
 				
-				run prefix: parameters[:prefix],
-					executable: "tests",
+				run executable: "tests",
 					executable_file: parameters[:executable_file],
 					arguments: parameters[:arguments]
 			end
@@ -83,20 +65,12 @@ define_target 'unit-test-library' do |target|
 end
 
 define_target "unit-test-tests" do |target|
-	target.build do |*arguments|
-		run prefix: target.name, source_files: target.package.path.glob("test/UnitTest/**/*.cpp"), arguments: arguments
-	end
-	
 	target.depends 'Library/UnitTest'
-	target.provides 'Test/UnitTest'
-	
-	target.depends 'Build/Files'
-	target.depends "Build/Clang"
-	
-	target.depends :platform
 	target.depends "Language/C++14", private: true
 	
-	target.provides "Test/UnitTest"
+	target.provides "Test/UnitTest" do |*arguments|
+		run source_files: target.package.path.glob("test/UnitTest/**/*.cpp"), arguments: arguments
+	end
 end
 
 define_target "generate-unit-test" do |target|
