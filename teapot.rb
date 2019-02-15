@@ -48,7 +48,7 @@ define_target 'unit-test-library' do |target|
 			parameter :arguments
 			
 			parameter :executable_file, implicit: true do |arguments|
-				environment[:install_prefix] + arguments[:prefix] + "bin/tests"
+				environment[:install_prefix] + environment.checksum + "tests"
 			end
 			
 			apply do |parameters|
