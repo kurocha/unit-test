@@ -33,7 +33,7 @@ namespace UnitTest
 		}
 		
 		// Check if the condition is true, otherwise the test fails.
-		[[deprecated]] void check(bool condition)
+		void check(bool condition)
 		{
 			expect(condition).to(Expectations::be_true);
 		}
