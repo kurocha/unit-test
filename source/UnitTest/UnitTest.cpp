@@ -17,21 +17,6 @@
 #include <system_error>
 #include <errno.h>
 
-static void change_directory(std::string file_path)
-{
-	auto last_slash = file_path.find_last_of('/');
-	
-	if (last_slash == std::string::npos)
-		return;
-	
-	file_path.resize(last_slash);
-	
-	auto result = chdir(file_path.c_str());
-	
-	if (result == -1)
-		throw std::system_error(errno, std::generic_category(), "chdir");
-}
-
 int main (int argc, char** argv)
 {
 	UnitTest::Names filter;
@@ -44,9 +29,6 @@ int main (int argc, char** argv)
 			filter.insert(argv[i]);
 		}
 	}
-	
-	// Change the working directory so that unit tests can expect some consistency if/when loading external resources:
-	change_directory(argv[0]);
 	
 	// if (UnitTest::Options::failure_command.size() > 0) {
 	// 	signal(SIGSEGV, UnitTest::segmentation_fault);
