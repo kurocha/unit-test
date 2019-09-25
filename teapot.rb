@@ -45,20 +45,22 @@ define_target 'unit-test-library' do |target|
 		define Rule, "run.unit-tests" do
 			input :source_files
 			
-			parameter :arguments
+			parameter :tests, default: "tests"
 			
-			parameter :executable_file, implicit: true do |arguments|
-				environment[:install_prefix] + environment.checksum + "tests"
+			parameter :prefix, implicit: true do |arguments|
+				arguments[:source_files].root
 			end
 			
+			parameter :arguments
+			
 			apply do |parameters|
-				build executable: "tests",
+				executable_path = build executable: parameters[:tests],
 					executable_file: parameters[:executable_file],
 					source_files: parameters[:source_files]
 				
-				run executable: "tests",
-					executable_file: parameters[:executable_file],
-					arguments: parameters[:arguments]
+				run executable_path: executable_path,
+					arguments: parameters[:arguments],
+					prefix: parameters[:prefix]
 			end
 		end
 	end
