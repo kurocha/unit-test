@@ -54,11 +54,11 @@ define_target 'unit-test-library' do |target|
 			parameter :arguments
 			
 			apply do |parameters|
-				executable_path = build executable: parameters[:tests],
+				executable_file = build executable: parameters[:tests],
 					executable_file: parameters[:executable_file],
 					source_files: parameters[:source_files]
 				
-				run executable_path: executable_path,
+				run executable_file: executable_file,
 					arguments: parameters[:arguments],
 					prefix: parameters[:prefix]
 			end
