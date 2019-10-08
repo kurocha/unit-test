@@ -23,7 +23,7 @@ end
 define_target 'unit-test-library' do |target|
 	target.depends "Library/Streams", public: true
 	
-	target.depends :executor
+	target.depends :executor, public: true
 	target.depends "Language/C++14"
 	
 	target.provides "Library/UnitTest" do
@@ -142,4 +142,9 @@ define_configuration "unit-test" do |configuration|
 	configuration.public!
 	
 	configuration.require "streams"
+	
+	host /linux|darwin|bsd/ do
+		configuration.require "executor-unix"
+		configuration.require "executor-lldb"
+	end
 end
