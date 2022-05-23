@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "Assert.hpp"
+
 #include "Expect.hpp"
 
 #include "Expectations/Be.hpp"
@@ -19,5 +21,3 @@
 #include "Expectations/ThrowException.hpp"
 
 #include "Registry.hpp"
-
-#undef assert

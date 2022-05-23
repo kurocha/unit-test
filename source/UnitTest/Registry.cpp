@@ -10,8 +10,6 @@
 
 #include "Format.hpp"
 
-#undef assert
-
 namespace UnitTest
 {
 	void Registry::add(Suite * suite) {

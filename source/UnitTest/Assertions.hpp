@@ -12,8 +12,7 @@
 #include <sstream>
 
 #include "Format.hpp"
-
-#undef assert
+#include "Assert.hpp"
 
 namespace UnitTest
 {

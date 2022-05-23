@@ -10,8 +10,6 @@
 
 #include <Streams/Color.hpp>
 
-#undef assert
-
 namespace UnitTest
 {
 	Assertions::Assertions(std::ostream & output, std::size_t level, bool inverted, bool verbose) : _output(output), _level(level), _inverted(inverted), _verbose(verbose)
