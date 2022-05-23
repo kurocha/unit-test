@@ -94,7 +94,7 @@ namespace UnitTest
 			bool operator()(const ValueT & value, Assertions & assertions) const
 			{
 				// std::cerr << *this << ": " << (value == expected_value) << std::endl;
-				return assertions.assert(value == expected_value, *this);
+				return assertions.test(value == expected_value, *this);
 			}
 			
 			template <typename RightT>
@@ -123,7 +123,7 @@ namespace UnitTest
 			template <typename ValueT>
 			bool operator()(const ValueT & value, Assertions & assertions) const
 			{
-				return assertions.assert(value != expected_value, *this);
+				return assertions.test(value != expected_value, *this);
 			}
 			
 			template <typename RightT>
@@ -152,7 +152,7 @@ namespace UnitTest
 			template <typename ValueT>
 			bool operator()(const ValueT & value, Assertions & assertions) const
 			{
-				return assertions.assert(value < expected_value, *this);
+				return assertions.test(value < expected_value, *this);
 			}
 			
 			template <typename RightT>
@@ -181,7 +181,7 @@ namespace UnitTest
 			template <typename ValueT>
 			bool operator()(const ValueT & value, Assertions & assertions) const
 			{
-				return assertions.assert(value <= expected_value, *this);
+				return assertions.test(value <= expected_value, *this);
 			}
 			
 			template <typename RightT>
@@ -210,7 +210,7 @@ namespace UnitTest
 			template <typename ValueT>
 			bool operator()(const ValueT & value, Assertions & assertions) const
 			{
-				return assertions.assert(value > expected_value, *this);
+				return assertions.test(value > expected_value, *this);
 			}
 			
 			template <typename RightT>
@@ -239,7 +239,7 @@ namespace UnitTest
 			template <typename ValueT>
 			bool operator()(const ValueT & value, Assertions & assertions) const
 			{
-				return assertions.assert(value >= expected_value, *this);
+				return assertions.test(value >= expected_value, *this);
 			}
 			
 			template <typename RightT>

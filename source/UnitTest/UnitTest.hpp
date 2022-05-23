@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "Assert.hpp"
-
 #include "Expect.hpp"
 
 #include "Expectations/Be.hpp"

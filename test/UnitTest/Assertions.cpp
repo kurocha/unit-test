@@ -22,8 +22,8 @@ namespace UnitTest
 				std::stringstream buffer;
 				UnitTest::Assertions assertions(buffer);
 				
-				assertions.assert(true, "It passed.");
-				assertions.assert(false, "It failed.");
+				assertions.test(true, "It passed.");
+				assertions.test(false, "It failed.");
 				
 				examiner.expect(assertions.passed()).to(be == 1);
 				examiner.expect(assertions.failed()).to(be == 1);
@@ -37,8 +37,8 @@ namespace UnitTest
 				std::stringstream buffer;
 				Assertions assertions(buffer);
 
-				assertions.assert(false, "(A) This text should be displayed.");
-				assertions.assert(true, "(B) This text shold be displayed.");
+				assertions.test(false, "(A) This text should be displayed.");
+				assertions.test(true, "(B) This text shold be displayed.");
 
 				// examiner << "The test examiner should have passed once." << std::endl;
 				examiner.expect(assertions.passed()) == 1;

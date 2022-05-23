@@ -48,16 +48,16 @@ namespace UnitTest
 				std::size_t i = 0;
 				
 				for (const auto & item : value) {
-					if (!assertions.assert(i < N, OutOfBounds{i, N})) {
+					if (!assertions.test(i < N, OutOfBounds{i, N})) {
 						break;
 					}
 					
-					assertions.assert(item == sequence[i], Offset{i, item});
+					assertions.test(item == sequence[i], Offset{i, item});
 					
 					i++;
 				}
 				
-				assertions.assert(i == N, OutOfBounds{i, N});
+				assertions.test(i == N, OutOfBounds{i, N});
 			}
 			
 			friend std::ostream & operator<<(std::ostream & output, const BeSequence & condition)

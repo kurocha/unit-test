@@ -49,10 +49,10 @@ namespace UnitTest
 					apply(value, arguments);
 					
 					// Didn't throw any exception, so the expectation failed.
-					assertions.assert(false, *this);
+					assertions.test(false, *this);
 				} catch (ExceptionT & exception) {
 					// Did throw an exception, so the expectation was confirmed.
-					assertions.assert(true, *this);
+					assertions.test(true, *this);
 				}
 			}
 			

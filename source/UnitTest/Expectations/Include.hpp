@@ -25,14 +25,14 @@ namespace UnitTest
 				auto begin = std::begin(value);
 				auto end = std::end(value);
 				
-				return assertions.assert(std::find(begin, end, needle) != end, *this);
+				return assertions.test(std::find(begin, end, needle) != end, *this);
 			}
 			
 			bool operator()(const std::string & value, Assertions & assertions) const
 			{
 				auto pos = value.find(needle);
 				
-				return assertions.assert(pos != std::string::npos, *this);
+				return assertions.test(pos != std::string::npos, *this);
 			}
 			
 			friend std::ostream & operator<<(std::ostream & output, const Include & condition)

@@ -101,10 +101,7 @@ namespace UnitTest
 		{
 			To<FunctionT, NestedValueT> to{function, nested_value, inverted};
 			
-			if (inverted)
-				assertions.refute(to);
-			else
-				assertions.assert(to);
+			assertions.test(to, false, inverted);
 		}
 	};
 }

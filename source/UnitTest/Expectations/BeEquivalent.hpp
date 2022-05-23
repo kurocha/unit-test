@@ -20,7 +20,7 @@ namespace UnitTest
 			template <typename ValueT>
 			bool operator()(const ValueT & value, Assertions & assertions) const
 			{
-				return assertions.assert(value.equivalent(expected_value), *this);
+				return assertions.test(value.equivalent(expected_value), *this);
 			}
 			
 			friend std::ostream & operator<<(std::ostream & output, const BeEquivalent & condition)

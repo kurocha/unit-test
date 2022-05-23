@@ -12,7 +12,6 @@
 #include <sstream>
 
 #include "Format.hpp"
-#include "Assert.hpp"
 
 namespace UnitTest
 {
@@ -37,37 +36,23 @@ namespace UnitTest
 		explicit operator bool() const noexcept;
 		
 		template <typename FunctionT>
-		bool assert(FunctionT && function, bool verbose = false)
+		bool test(FunctionT && function, bool verbose = false, bool inverted = false)
 		{
 			std::stringstream buffer;
 			Streams::TTY tty(buffer, _output);
-			Assertions nested{buffer, _level+1, false, verbose};
+			Assertions nested{buffer, _level+1, inverted, verbose};
 			
 			function(nested);
 			
 			_count += nested._count;
 			
-			return assert(nested, function, buffer, verbose);
-		}
-		
-		template <typename FunctionT>
-		bool refute(FunctionT && function, bool verbose = false)
-		{
-			std::stringstream buffer;
-			Streams::TTY tty(buffer, _output);
-			Assertions nested{buffer, _level+1, true, verbose};
-			
-			function(nested);
-			
-			_count += nested._count;
-			
-			return assert(nested, function, buffer, verbose);
+			return test(nested, function, buffer, verbose);
 		}
 		
 		friend std::ostream & operator<<(std::ostream & output, const Assertions & assertions);
 		
 		template <typename FunctionT>
-		bool assert(bool condition, FunctionT && function)
+		bool test(bool condition, FunctionT && function)
 		{
 			if (condition) {
 				_passed += 1;
@@ -88,7 +73,7 @@ namespace UnitTest
 		
 	private:
 		template <typename FunctionT>
-		bool assert(Assertions & nested, FunctionT & function, const std::stringstream & buffer, bool verbose)
+		bool test(Assertions & nested, FunctionT & function, const std::stringstream & buffer, bool verbose)
 		{
 			_count += 1;
 			

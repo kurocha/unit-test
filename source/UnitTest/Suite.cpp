@@ -28,9 +28,9 @@ namespace UnitTest
 	{
 		for (auto test : _tests) {
 			try {
-				assertions.assert(test, assertions.verbose());
+				assertions.test(test, assertions.verbose());
 			} catch (...) {
-				assertions.assert(false, "Test failed with unhandled exception");
+				assertions.test(false, "Test failed with unhandled exception");
 			}
 		}
 	}

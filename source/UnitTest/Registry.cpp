@@ -24,7 +24,7 @@ namespace UnitTest
 		
 		for (auto suite : _suites) {
 			if (names.empty() || names.find(suite->name()) != names.end()) {
-				overall.assert(*suite, verbose);
+				overall.test(*suite, verbose);
 			}
 		}
 		

@@ -24,7 +24,7 @@ namespace UnitTest
 				current++;
 				
 				while (current != end) {
-					assertions.assert(previous <= current);
+					assertions.test(previous <= current);
 				}
 			}
 		};

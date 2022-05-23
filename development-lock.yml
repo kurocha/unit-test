@@ -21,7 +21,7 @@ variants:
   :commit: f6a26a8ac3a47a23a213cbd15da2183239d394d1
   :branch: master
 platform-darwin-osx:
-  :commit: b02e5db509111e3a338b5133cbdce0239687bff9
+  :commit: 962fefd12ad827787e3a6d122cfc7c9ecbaa4cb5
   :branch: master
 platform-darwin-ios:
   :commit: c81ccc5ee73cb1c6ae31e378148c4cb8c9f8759e
@@ -30,7 +30,7 @@ build-clang:
   :commit: 89942e92e5ac6ffb10faa9cd2d4858903bd28d4f
   :branch: master
 build-darwin:
-  :commit: 90cb160f84c99d6791ac45e38b33de2917434f91
+  :commit: 4dce329501f49a3f2a4c480a72767ef823f95e37
   :branch: master
 generate-template:
   :commit: ad0dcfb6da64cc0508b71916b30e1050c82ecea7
