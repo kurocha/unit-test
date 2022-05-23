@@ -71,7 +71,9 @@ define_target "unit-test-tests" do |target|
 	target.depends "Language/C++14", private: true
 	
 	target.provides "Test/UnitTest" do |*arguments|
-		run source_files: target.package.path.glob("test/UnitTest/**/*.cpp"), arguments: arguments
+		test_root = target.package.path + 'test'
+		
+		run tests: 'UnitTest-tests', source_files: test_root.glob('UnitTest/**/*.cpp'), arguments: arguments
 	end
 end
 
