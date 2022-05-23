@@ -19,3 +19,5 @@
 #include "Expectations/ThrowException.hpp"
 
 #include "Registry.hpp"
+
+#undef assert

@@ -10,6 +10,8 @@
 
 #include "Registry.hpp"
 
+#undef assert
+
 namespace UnitTest
 {
 	
