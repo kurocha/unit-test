@@ -11,6 +11,7 @@ jobs:
       matrix:
         os:
           - ubuntu
+          - macos
         
         ruby:
           - "3.1"
@@ -23,11 +24,6 @@ jobs:
         bundler-cache: true
     
     - uses: kurocha/setup-cpp@master
-    
-    - name: Git credentials
-      run: |
-        git config --global user.email "samuel@oriontransfer.net"
-        git config --global user.name "Samuel Williams"
     
     - name: Run tests
       timeout-minutes: 5
